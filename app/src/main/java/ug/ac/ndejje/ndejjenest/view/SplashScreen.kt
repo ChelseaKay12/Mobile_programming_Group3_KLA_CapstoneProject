@@ -16,6 +16,10 @@ import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.NdejjeNestTheme
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
+import ug.ac.ndejje.ndejjenest.ui.theme.TextGray
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
@@ -31,6 +35,8 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             LogoSection()
             Spacer(modifier = Modifier.height(16.dp))
             TitleSection()
+            Spacer(modifier = Modifier.height(8.dp))
+            SloganSection()
         }
     }
 }
@@ -58,6 +64,20 @@ fun TitleSection() {
             color = PrimaryYellow
         )
     }
+}
+
+@Composable
+fun SloganSection() {
+    Text(
+        text = "Find. Stay. Thrive.",
+        style = MaterialTheme.typography.bodyLarge.copy(
+            fontFamily = Outfit,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            letterSpacing = 4.sp
+        ),
+        color = TextGray
+    )
 }
 
 @Preview(showBackground = true)
