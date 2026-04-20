@@ -11,6 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.Path
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.unit.dp
 import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.NdejjeNestTheme
@@ -27,16 +30,26 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         color = PrimaryDarkBlue
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            LogoSection()
-            Spacer(modifier = Modifier.height(16.dp))
-            TitleSection()
-            Spacer(modifier = Modifier.height(8.dp))
-            SloganSection()
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.align(Alignment.BottomCenter)
+            ) {
+                BottomWave()
+            }
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                LogoSection()
+                Spacer(modifier = Modifier.height(16.dp))
+                TitleSection()
+                Spacer(modifier = Modifier.height(8.dp))
+                SloganSection()
+                Spacer(modifier = Modifier.height(48.dp))
+                LoadingSection()
+            }
         }
     }
 }
@@ -52,7 +65,7 @@ fun LogoSection() {
 
 @Composable
 fun TitleSection() {
-    Row {
+    Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "Ndejje",
             style = MaterialTheme.typography.displayLarge,
@@ -73,11 +86,57 @@ fun SloganSection() {
         style = MaterialTheme.typography.bodyLarge.copy(
             fontFamily = Outfit,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
-            letterSpacing = 4.sp
+            fontSize = 12.sp,
+            letterSpacing = 2.sp
         ),
         color = TextGray
     )
+}
+
+@Composable
+fun LoadingSection() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        CircularProgressIndicator(
+            color = PrimaryYellow,
+            strokeWidth = 3.dp,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Loading...",
+            style = MaterialTheme.typography.labelSmall,
+            color = TextGray
+        )
+    }
+}
+
+@Composable
+fun BottomWave() {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        val width = size.width
+        val height = size.height
+        val path = Path().apply {
+            moveTo(0f, height) // Bottom-left corner
+            lineTo(0f, height * 0.7f) // Left side start (higher than before)
+            quadraticBezierTo(
+                width * 0.5f, height * 0.65f, // Control point
+                width, height * 0.4f // Right side end (much higher)
+            )
+            lineTo(width, height) // Bottom-right corner
+            close()
+        }
+        drawPath(
+            path = path,
+            color = PrimaryYellow
+        )
+    }
 }
 
 @Preview(showBackground = true)
