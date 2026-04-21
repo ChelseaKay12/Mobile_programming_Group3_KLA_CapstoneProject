@@ -11,6 +11,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.navigation.Screen
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 
 data class OnboardingPage(
     val title: String,
@@ -22,17 +31,17 @@ data class OnboardingPage(
 fun OnboardingScreen(navController: NavController) {
     val pages = listOf(
         OnboardingPage(
-            title = "Find Your Perfect Stay",
+            title = "Find Your\nPerfect Stay",
             subtitle = "Discover affordable hostels and rental rooms near Ndejje University.",
             image = 0 // Placeholder
         ),
         OnboardingPage(
-            title = "Easy Booking Process",
+            title = "Easy\nBooking Process",
             subtitle = "Book your preferred hostel in just a few clicks with secure payments.",
             image = 0 // Placeholder
         ),
         OnboardingPage(
-            title = "Connect with Roommates",
+            title = "Connect with\nRoommates",
             subtitle = "Find compatible roommates to share your university journey with.",
             image = 0 // Placeholder
         )
@@ -81,8 +90,42 @@ fun OnboardingPagerItem(page: OnboardingPage) {
     ) {
         // Headlines and Illustrations will be added in Feature 2 and 3
         Spacer(modifier = Modifier.height(60.dp))
-        Text(text = page.title, style = MaterialTheme.typography.headlineLarge)
+        
+        val annotatedTitle = buildAnnotatedString {
+            val lines = page.title.split("\n")
+            lines.forEachIndexed { lineIndex, line ->
+                val words = line.split(" ")
+                words.forEachIndexed { wordIndex, word ->
+                    val color = when (word.lowercase().trim()) {
+                        "perfect" -> PrimaryYellow
+                        "stay", "process", "roommates" -> PrimaryGreen
+                        else -> PrimaryDarkBlue
+                    }
+                    
+                    withStyle(style = SpanStyle(color = color)) {
+                        append(word)
+                    }
+                    if (wordIndex < words.size - 1) append(" ")
+                }
+                if (lineIndex < lines.size - 1) append("\n")
+            }
+        }
+
+        Text(
+            text = annotatedTitle,
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontFamily = Outfit,
+                fontWeight = FontWeight.Bold,
+                lineHeight = 44.sp
+            )
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = page.subtitle, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            text = page.subtitle,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontFamily = Outfit,
+                color = Color.Gray
+            )
+        )
     }
 }
