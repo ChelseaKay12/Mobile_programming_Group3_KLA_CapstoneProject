@@ -13,12 +13,9 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(onSplashFinished = {
-                // Navigate to Onboarding and remove Splash from backstack
-                /*
                 navController.navigate(Screen.Onboarding.route) {
                     popUpTo(Screen.Splash.route) { inclusive = true }
                 }
-                */
             })
         }
         composable(Screen.Onboarding.route) {
