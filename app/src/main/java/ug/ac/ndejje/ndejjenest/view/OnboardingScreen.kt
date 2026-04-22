@@ -9,8 +9,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
 import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.navigation.Screen
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import ug.ac.ndejje.ndejjenest.R
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.SpanStyle
@@ -33,17 +40,17 @@ fun OnboardingScreen(navController: NavController) {
         OnboardingPage(
             title = "Find Your\nPerfect Stay",
             subtitle = "Discover affordable hostels and rental rooms near Ndejje University.",
-            image = 0 // Placeholder
-        ),
-        OnboardingPage(
-            title = "Easy\nBooking Process",
-            subtitle = "Book your preferred hostel in just a few clicks with secure payments.",
-            image = 0 // Placeholder
+            image = R.drawable.onboarding1
         ),
         OnboardingPage(
             title = "Connect with\nRoommates",
             subtitle = "Find compatible roommates to share your university journey with.",
-            image = 0 // Placeholder
+            image = R.drawable.onboarding3
+        ),
+        OnboardingPage(
+            title = "Meet Your\nHost, Mellisa",
+            subtitle = "Get direct support from experienced hosts to make your stay comfortable.",
+            image = R.drawable.mellisa
         )
     )
 
@@ -57,22 +64,88 @@ fun OnboardingScreen(navController: NavController) {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.weight(0.8f)
-            ) { pageIndex ->
-                OnboardingPagerItem(page = pages[pageIndex])
-            }
-            
-            // Placeholder for bottom section (Feature 4, 5, 6)
+            // Static Header Section (Stays Intact)
             Column(
                 modifier = Modifier
-                    .weight(0.2f)
-                    .fillMaxWidth(),
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 60.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                // Feature 2: Static Headline (Requested to stay the same for all images)
+                val annotatedTitle = buildAnnotatedString {
+                    append("Find Your\n")
+                    withStyle(style = SpanStyle(color = PrimaryYellow)) {
+                        append("Perfect ")
+                    }
+                    withStyle(style = SpanStyle(color = PrimaryGreen)) {
+                        append("Stay")
+                    }
+                }
+
+                Text(
+                    text = annotatedTitle,
+                    style = MaterialTheme.typography.displayLarge.copy(
+                        fontFamily = Outfit,
+                        fontWeight = FontWeight.Bold,
+                        color = PrimaryDarkBlue,
+                        lineHeight = 44.sp
+                    )
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Discover affordable hostels and rental rooms near Ndejje University.",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontFamily = Outfit,
+                        color = Color.Gray
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Scrollable Image Section
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+            ) { pageIndex ->
+                IllustrationSection(page = pages[pageIndex])
+            }
+            
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Bottom section
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 48.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                // We'll add the Page Indicator and Buttons here in the next steps
+                // Feature 4: Page Indicator (The 3 dots)
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // repeat() is a simple loop that runs once for each page we have
+                    repeat(pages.size) { index ->
+                        // Check if this specific dot is the one the user is looking at
+                        val isActive = pagerState.currentPage == index
+                        
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 4.dp) // Horizontal space between dots
+                                .height(8.dp)               // Height for all dots
+                                .width(if (isActive) 24.dp else 8.dp) // Active dot is elongated (wider)
+                                .clip(CircleShape)          // Makes the dots rounded like circles
+                                .background(
+                                    if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0) // Blue if active, Light Gray if not
+                                )
+                        )
+                    }
+                }
+                
                 Spacer(modifier = Modifier.height(32.dp))
             }
         }
@@ -80,52 +153,32 @@ fun OnboardingScreen(navController: NavController) {
 }
 
 @Composable
-fun OnboardingPagerItem(page: OnboardingPage) {
-    Column(
+fun IllustrationSection(page: OnboardingPage) {
+    Box(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
+            .fillMaxWidth()
+            .height(350.dp),
+        contentAlignment = Alignment.Center
     ) {
-        // Headlines and Illustrations will be added in Feature 2 and 3
-        Spacer(modifier = Modifier.height(60.dp))
-        
-        val annotatedTitle = buildAnnotatedString {
-            val lines = page.title.split("\n")
-            lines.forEachIndexed { lineIndex, line ->
-                val words = line.split(" ")
-                words.forEachIndexed { wordIndex, word ->
-                    val color = when (word.lowercase().trim()) {
-                        "perfect" -> PrimaryYellow
-                        "stay", "process", "roommates" -> PrimaryGreen
-                        else -> PrimaryDarkBlue
-                    }
-                    
-                    withStyle(style = SpanStyle(color = color)) {
-                        append(word)
-                    }
-                    if (wordIndex < words.size - 1) append(" ")
-                }
-                if (lineIndex < lines.size - 1) append("\n")
-            }
+        val imageRes = try {
+            if (page.image == 0) R.drawable.ic_launcher_foreground else page.image
+        } catch (e: Exception) {
+            R.drawable.ic_launcher_foreground
         }
 
-        Text(
-            text = annotatedTitle,
-            style = MaterialTheme.typography.displayLarge.copy(
-                fontFamily = Outfit,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 44.sp
-            )
+        Image(
+            painter = painterResource(id = imageRes),
+            contentDescription = "Onboarding Illustration",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = page.subtitle,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontFamily = Outfit,
-                color = Color.Gray
-            )
-        )
+    }
+}
+
+@androidx.compose.ui.tooling.preview.Preview(showBackground = true)
+@Composable
+fun OnboardingScreenPreview() {
+    ug.ac.ndejje.ndejjenest.ui.theme.NdejjeNestTheme {
+        OnboardingScreen(navController = androidx.navigation.compose.rememberNavController())
     }
 }
