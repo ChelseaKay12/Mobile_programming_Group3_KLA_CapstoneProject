@@ -23,9 +23,19 @@ import ug.ac.ndejje.ndejjenest.ui.theme.TextGray
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
+    val currentOnSplashFinished by rememberUpdatedState(onSplashFinished)
+
+    LaunchedEffect(Unit) {
+        delay(3000) // 3 seconds delay
+        currentOnSplashFinished()
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = PrimaryDarkBlue
