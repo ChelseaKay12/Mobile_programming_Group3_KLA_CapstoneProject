@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
 import androidx.compose.ui.draw.clip
 import androidx.navigation.NavController
@@ -17,6 +18,7 @@ import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.dimensionResource
 import ug.ac.ndejje.ndejjenest.R
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -67,7 +69,7 @@ fun OnboardingScreen(navController: NavController) {
             // Static Header Section (Stays Intact)
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
                     .padding(top = 60.dp),
                 horizontalAlignment = Alignment.Start
             ) {
@@ -91,7 +93,7 @@ fun OnboardingScreen(navController: NavController) {
                         lineHeight = 44.sp
                     )
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                 Text(
                     text = "Discover affordable hostels and rental rooms near Ndejje University.",
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -101,7 +103,7 @@ fun OnboardingScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
 
             // Scrollable Image Section
             HorizontalPager(
@@ -146,7 +148,34 @@ fun OnboardingScreen(navController: NavController) {
                     }
                 }
                 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
+
+                // Feature 5: Primary Action Button ("Get Started")
+                Button(
+                    onClick = { 
+                        // This tells the app: "When clicked, go to the Login screen"
+                        navController.navigate(Screen.Login.route) 
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()        // Make it stretch across the width
+                        .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)) // Use large margin from dimens.xml
+                        .height(dimensionResource(id = R.dimen.button_height)),        // Use button height from dimens.xml
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryDarkBlue // Use our custom dark blue
+                    ),
+                    shape = RoundedCornerShape(16.dp) // Give it rounded corners
+                ) {
+                    Text(
+                        text = "Get Started",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = Color.White // Make the text white so it stands out
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
             }
         }
     }
