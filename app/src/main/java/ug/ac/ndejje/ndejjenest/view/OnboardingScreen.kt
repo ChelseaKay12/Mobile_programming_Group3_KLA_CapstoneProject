@@ -12,6 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.ui.draw.clip
 import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.navigation.Screen
@@ -30,14 +35,19 @@ import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 
+/**
+ * Data model for each onboarding page.
+ * This is like a "blueprint" that tells us what each slide needs.
+ */
 data class OnboardingPage(
-    val title: String,
-    val subtitle: String,
-    val image: Int
+    val title: String,    // The bold headline
+    val subtitle: String, // The descriptive text
+    val image: Int        // The image resource (like R.drawable.onboarding1)
 )
 
 @Composable
 fun OnboardingScreen(navController: NavController) {
+    // 1. Define the list of pages we want to show
     val pages = listOf(
         OnboardingPage(
             title = "Find Your\nPerfect Stay",
@@ -56,24 +66,27 @@ fun OnboardingScreen(navController: NavController) {
         )
     )
 
+    // 2. State management for the pager (keeps track of which page we are on)
     val pagerState = rememberPagerState(pageCount = { pages.size })
 
+    // 3. Main layout container
     Scaffold(
-        containerColor = Color.White
+        containerColor = Color.White // Keeping the background clean and white
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Static Header Section (Stays Intact)
+            // --- HEADER SECTION ---
+            // This part stays fixed (intact) at the top of the screen
             Column(
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
                     .padding(top = 60.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                // Feature 2: Static Headline (Requested to stay the same for all images)
+                // buildAnnotatedString allows us to color specific words (Feature 2)
                 val annotatedTitle = buildAnnotatedString {
                     append("Find Your\n")
                     withStyle(style = SpanStyle(color = PrimaryYellow)) {
@@ -93,7 +106,10 @@ fun OnboardingScreen(navController: NavController) {
                         lineHeight = 44.sp
                     )
                 )
+                
+                // Space between headline and subtitle
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
+                
                 Text(
                     text = "Discover affordable hostels and rental rooms near Ndejje University.",
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -103,21 +119,25 @@ fun OnboardingScreen(navController: NavController) {
                 )
             }
 
+            // Space between text and the image section
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
 
-            // Scrollable Image Section
+            // --- IMAGE SECTION ---
+            // HorizontalPager handles the swiping logic for the images
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp)
+                    .height(350.dp) // Large height for "full" images
             ) { pageIndex ->
+                // This function draws the image for the current page
                 IllustrationSection(page = pages[pageIndex])
             }
             
+            // Flexible spacer to push the buttons to the bottom of the screen
             Spacer(modifier = Modifier.weight(1f))
 
-            // Bottom section
+            // --- BOTTOM SECTION (Indicators & Buttons) ---
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -125,45 +145,52 @@ fun OnboardingScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                // Feature 4: Page Indicator (The 3 dots)
+                // Page Indicator (The 3 dots - Feature 4)
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // repeat() is a simple loop that runs once for each page we have
                     repeat(pages.size) { index ->
-                        // Check if this specific dot is the one the user is looking at
                         val isActive = pagerState.currentPage == index
-                        
                         Box(
                             modifier = Modifier
-                                .padding(horizontal = 4.dp) // Horizontal space between dots
-                                .height(8.dp)               // Height for all dots
-                                .width(if (isActive) 24.dp else 8.dp) // Active dot is elongated (wider)
-                                .clip(CircleShape)          // Makes the dots rounded like circles
+                                .padding(horizontal = 4.dp)
+                                .height(8.dp)
+                                .width(if (isActive) 24.dp else 8.dp) // Active dot is wider
+                                .clip(CircleShape)
                                 .background(
-                                    if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0) // Blue if active, Light Gray if not
+                                    if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0)
                                 )
                         )
                     }
                 }
                 
+                // Space between dots and main button
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
 
-                // Feature 5: Primary Action Button ("Get Started")
+                // --- MAIN ACTION BUTTON (Feature 5) ---
+                // Setup for the "hover/press" effect
+                val interactionSource = remember { MutableInteractionSource() }
+                val isPressed by interactionSource.collectIsPressedAsState()
+                val animatedButtonColor by animateColorAsState(
+                    targetValue = if (isPressed) PrimaryDarkBlue.copy(alpha = 0.85f) else PrimaryDarkBlue,
+                    label = "buttonPressAnimation"
+                )
+
                 Button(
                     onClick = { 
-                        // This tells the app: "When clicked, go to the Login screen"
+                        // Go to Login Screen
                         navController.navigate(Screen.Login.route) 
                     },
+                    interactionSource = interactionSource,
                     modifier = Modifier
-                        .fillMaxWidth()        // Make it stretch across the width
-                        .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)) // Use large margin from dimens.xml
-                        .height(dimensionResource(id = R.dimen.button_height)),        // Use button height from dimens.xml
+                        .fillMaxWidth()
+                        .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
+                        .height(dimensionResource(id = R.dimen.button_height)),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue // Use our custom dark blue
+                        containerColor = animatedButtonColor
                     ),
-                    shape = RoundedCornerShape(16.dp) // Give it rounded corners
+                    shape = RoundedCornerShape(16.dp)
                 ) {
                     Text(
                         text = "Get Started",
@@ -171,16 +198,37 @@ fun OnboardingScreen(navController: NavController) {
                             fontFamily = Outfit,
                             fontWeight = FontWeight.Bold
                         ),
-                        color = Color.White // Make the text white so it stands out
+                        color = Color.White
                     )
                 }
 
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
+                // Small space between buttons
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+
+                // --- SECONDARY ACTION BUTTON (Feature 6) ---
+                TextButton(
+                    onClick = { 
+                        navController.navigate(Screen.Login.route) 
+                    }
+                ) {
+                    Text(
+                        text = "Log In",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryDarkBlue
+                        )
+                    )
+                }
             }
         }
     }
 }
 
+/**
+ * Helper function to draw the onboarding illustrations.
+ * Uses ContentScale.Crop to make the images look "full".
+ */
 @Composable
 fun IllustrationSection(page: OnboardingPage) {
     Box(
@@ -189,6 +237,7 @@ fun IllustrationSection(page: OnboardingPage) {
             .height(350.dp),
         contentAlignment = Alignment.Center
     ) {
+        // Safe resource loading to prevent crashes if images are missing
         val imageRes = try {
             if (page.image == 0) R.drawable.ic_launcher_foreground else page.image
         } catch (e: Exception) {
@@ -204,6 +253,9 @@ fun IllustrationSection(page: OnboardingPage) {
     }
 }
 
+/**
+ * Preview function to see the design in Android Studio.
+ */
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true)
 @Composable
 fun OnboardingScreenPreview() {
