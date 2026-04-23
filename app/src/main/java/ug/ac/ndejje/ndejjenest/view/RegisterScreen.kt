@@ -2,7 +2,7 @@ package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.viewmodel.RegisterViewModel
 import androidx.compose.ui.text.font.FontWeight
@@ -65,7 +66,7 @@ fun RegisterScreen(
                     .align(Alignment.TopStart) // Positions it in the top-left corner
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = PrimaryDarkBlue // Using our brand color
                 )
@@ -256,7 +257,37 @@ fun RegisterScreen(
                     )
                 }
 
-                // Features 7–8 will be added here in upcoming steps
+                Spacer(modifier = Modifier.weight(1f)) // Pushes the footer to the bottom
+
+                // Feature 7: Bottom Navigation
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = dimensionResource(id = R.dimen.spacing_large)),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Already have an account?",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = Outfit,
+                            color = Color.Gray
+                        )
+                    )
+                    TextButton(onClick = { 
+                        viewModel.onLoginClicked()
+                        navController.popBackStack() 
+                    }) {
+                        Text(
+                            text = "Log In",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontFamily = Outfit,
+                                color = PrimaryYellow,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
+                }
             }
         }
     }
