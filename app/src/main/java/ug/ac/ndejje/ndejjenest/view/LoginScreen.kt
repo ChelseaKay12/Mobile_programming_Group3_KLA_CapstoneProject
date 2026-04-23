@@ -14,6 +14,14 @@ import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontWeight
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ug.ac.ndejje.ndejjenest.viewmodel.LoginViewModel
 
@@ -56,9 +64,41 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                // Placeholder for logo and form
-                Spacer(modifier = Modifier.height(100.dp))
-                Text(text = "Feature 1: Back Button Implemented", style = MaterialTheme.typography.bodyLarge)
+                // Feature 2: Branding Section
+                Spacer(modifier = Modifier.height(40.dp))
+                
+                // App Logo
+                Image(
+                    painter = painterResource(id = R.drawable.login_logo),
+                    contentDescription = "App Logo",
+                    modifier = Modifier.size(180.dp)
+                )
+                
+                // App Name with Multi-color (Ndejje in Blue, Nest in Yellow)
+                val annotatedTitle = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = PrimaryDarkBlue)) {
+                        append("Ndejje")
+                    }
+                    withStyle(style = SpanStyle(color = PrimaryYellow)) {
+                        append("Nest")
+                    }
+                }
+
+                Text(
+                    text = annotatedTitle,
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontFamily = Outfit,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+
+                Text(
+                    text = "Welcome back!",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontFamily = Outfit,
+                        color = Color.Gray
+                    )
+                )
             }
         }
     }
