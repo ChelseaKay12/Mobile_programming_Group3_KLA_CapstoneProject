@@ -180,6 +180,29 @@ fun LoginScreen(
                         )
                     }
                 }
+                
+                // Feature 5: Primary Action (Log In Button)
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
+                
+                Button(
+                    onClick = { viewModel.onLoginClicked() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryDarkBlue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        text = "Log In",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
             }
         }
     }
