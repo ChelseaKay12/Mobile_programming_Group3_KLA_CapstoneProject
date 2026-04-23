@@ -234,7 +234,29 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
-                // Features 6–8 will be added here in upcoming steps
+                // Feature 6: Sign Up Button
+                Button(
+                    onClick = { viewModel.onRegisterClicked() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryDarkBlue,
+                        contentColor = Color.White
+                    ),
+                    enabled = isTermsAccepted
+                ) {
+                    Text(
+                        text = "Sign Up",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+
+                // Features 7–8 will be added here in upcoming steps
             }
         }
     }
