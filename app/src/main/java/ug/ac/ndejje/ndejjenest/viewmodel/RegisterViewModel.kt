@@ -64,6 +64,13 @@ class RegisterViewModel : ViewModel() {
         _isConfirmPasswordVisible.value = !_isConfirmPasswordVisible.value
     }
 
+    private val _isTermsAccepted = MutableStateFlow(false)
+    val isTermsAccepted: StateFlow<Boolean> = _isTermsAccepted.asStateFlow()
+
+    fun onTermsCheckedChanged(isChecked: Boolean) {
+        _isTermsAccepted.value = isChecked
+    }
+
     fun onRegisterClicked() {
         // Here we will eventually add logic to create a new user account
         println("Register clicked")

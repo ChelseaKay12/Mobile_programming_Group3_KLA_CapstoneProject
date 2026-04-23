@@ -43,6 +43,7 @@ fun RegisterScreen(
     val confirmPassword by viewModel.confirmPassword.collectAsState()
     val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
     val isConfirmPasswordVisible by viewModel.isConfirmPasswordVisible.collectAsState()
+    val isTermsAccepted by viewModel.isTermsAccepted.collectAsState()
 
     Scaffold(
         containerColor = Color.White
@@ -209,7 +210,31 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
 
-                // Features 5–8 will be added here in upcoming steps
+                // Feature 5: Terms & Conditions
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = isTermsAccepted,
+                        onCheckedChange = { viewModel.onTermsCheckedChanged(it) },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = PrimaryDarkBlue
+                        )
+                    )
+                    Text(
+                        text = "I agree to the Terms & Conditions",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = Outfit,
+                            color = PrimaryDarkBlue,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
+
+                // Features 6–8 will be added here in upcoming steps
             }
         }
     }
