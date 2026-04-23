@@ -161,6 +161,25 @@ fun LoginScreen(
                         focusedLabelColor = PrimaryDarkBlue
                     )
                 )
+
+                // Feature 4: Forgot Password
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(
+                        onClick = { viewModel.onForgotPasswordClicked() }
+                    ) {
+                        Text(
+                            text = "Forgot Password?",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontFamily = Outfit,
+                                color = PrimaryDarkBlue,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                }
             }
         }
     }

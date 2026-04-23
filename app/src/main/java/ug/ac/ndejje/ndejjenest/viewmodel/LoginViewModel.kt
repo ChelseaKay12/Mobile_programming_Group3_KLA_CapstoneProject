@@ -37,6 +37,11 @@ class LoginViewModel : ViewModel() {
         _isPasswordVisible.value = !_isPasswordVisible.value
     }
 
+    fun onForgotPasswordClicked() {
+        // Placeholder for navigation to forgot password screen
+        println("Forgot password clicked")
+    }
+
     fun onLoginClicked() {
         // Here we will eventually add logic to talk to a server
         println("Login clicked with Email: ${_email.value}")
