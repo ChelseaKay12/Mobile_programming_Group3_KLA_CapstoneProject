@@ -20,6 +20,9 @@ class LoginViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
+    private val _isPasswordVisible = MutableStateFlow(false)
+    val isPasswordVisible: StateFlow<Boolean> = _isPasswordVisible.asStateFlow()
+
     // --- Actions (Logic) ---
 
     fun onEmailChanged(newEmail: String) {
@@ -28,6 +31,10 @@ class LoginViewModel : ViewModel() {
 
     fun onPasswordChanged(newPassword: String) {
         _password.value = newPassword
+    }
+
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = !_isPasswordVisible.value
     }
 
     fun onLoginClicked() {
