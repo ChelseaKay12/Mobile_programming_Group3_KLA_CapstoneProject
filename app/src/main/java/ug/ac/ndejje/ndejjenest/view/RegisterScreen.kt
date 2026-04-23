@@ -13,7 +13,10 @@ import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.viewmodel.RegisterViewModel
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontStyle
 
 @Composable
 fun RegisterScreen(
@@ -58,7 +61,28 @@ fun RegisterScreen(
                 // Spacer to push content below the back button
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
 
-                // Features 2–7 will be added here in upcoming steps
+                // Feature 2: Header Section
+                Text(
+                    text = "Create Account",
+                    style = MaterialTheme.typography.headlineLarge.copy(
+                        fontFamily = Outfit,
+                        fontWeight = FontWeight.Bold,
+                        color = PrimaryDarkBlue
+                    )
+                )
+
+                Text(
+                    text = "Join NdejjeNest today",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontFamily = Outfit,
+                        fontStyle = FontStyle.Italic,
+                        color = Color.Gray
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
+
+                // Features 3–8 will be added here in upcoming steps
             }
         }
     }
