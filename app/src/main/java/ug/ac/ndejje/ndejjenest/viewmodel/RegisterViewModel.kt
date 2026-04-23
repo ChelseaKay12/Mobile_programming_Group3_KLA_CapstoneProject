@@ -13,9 +13,28 @@ import kotlinx.coroutines.flow.asStateFlow
 class RegisterViewModel : ViewModel() {
 
     // --- State (Data) ---
-    // These will be filled in as we add each feature
+    private val _fullName = MutableStateFlow("")
+    val fullName: StateFlow<String> = _fullName.asStateFlow()
+
+    private val _email = MutableStateFlow("")
+    val email: StateFlow<String> = _email.asStateFlow()
+
+    private val _phoneNumber = MutableStateFlow("")
+    val phoneNumber: StateFlow<String> = _phoneNumber.asStateFlow()
 
     // --- Actions (Logic) ---
+
+    fun onFullNameChanged(newName: String) {
+        _fullName.value = newName
+    }
+
+    fun onEmailChanged(newEmail: String) {
+        _email.value = newEmail
+    }
+
+    fun onPhoneNumberChanged(newPhone: String) {
+        _phoneNumber.value = newPhone
+    }
 
     fun onRegisterClicked() {
         // Here we will eventually add logic to create a new user account

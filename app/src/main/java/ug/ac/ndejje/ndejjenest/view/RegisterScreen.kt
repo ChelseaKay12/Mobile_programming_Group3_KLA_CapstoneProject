@@ -17,12 +17,24 @@ import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.viewmodel.RegisterViewModel
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
     viewModel: RegisterViewModel = viewModel() // Automatically creates the ViewModel
 ) {
+    // --- State Observation ---
+    val fullName by viewModel.fullName.collectAsState()
+    val email by viewModel.email.collectAsState()
+    val phoneNumber by viewModel.phoneNumber.collectAsState()
+
     Scaffold(
         containerColor = Color.White
     ) { padding ->
@@ -82,7 +94,62 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_large)))
 
-                // Features 3–8 will be added here in upcoming steps
+                // Feature 3: Basic Input Fields
+                OutlinedTextField(
+                    value = fullName,
+                    onValueChange = { viewModel.onFullNameChanged(it) },
+                    label = { Text("Full Name", fontFamily = Outfit) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = PrimaryDarkBlue)
+                    },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryDarkBlue,
+                        focusedLabelColor = PrimaryDarkBlue
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { viewModel.onEmailChanged(it) },
+                    label = { Text("Email", fontFamily = Outfit) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = PrimaryDarkBlue)
+                    },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryDarkBlue,
+                        focusedLabelColor = PrimaryDarkBlue
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+
+                OutlinedTextField(
+                    value = phoneNumber,
+                    onValueChange = { viewModel.onPhoneNumberChanged(it) },
+                    label = { Text("Phone Number", fontFamily = Outfit) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = PrimaryDarkBlue)
+                    },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryDarkBlue,
+                        focusedLabelColor = PrimaryDarkBlue
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
+
+                // Features 4–8 will be added here in upcoming steps
             }
         }
     }
