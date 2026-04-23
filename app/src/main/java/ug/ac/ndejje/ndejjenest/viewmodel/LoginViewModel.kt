@@ -42,6 +42,11 @@ class LoginViewModel : ViewModel() {
         println("Forgot password clicked")
     }
 
+    fun onRegisterClicked() {
+        // Placeholder for navigation to registration screen
+        println("Register clicked")
+    }
+
     fun onLoginClicked() {
         // Here we will eventually add logic to talk to a server
         println("Login clicked with Email: ${_email.value}")

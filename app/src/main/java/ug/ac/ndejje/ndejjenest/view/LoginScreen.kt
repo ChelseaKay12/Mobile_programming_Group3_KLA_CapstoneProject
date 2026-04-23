@@ -203,6 +203,38 @@ fun LoginScreen(
                         )
                     )
                 }
+
+                // Feature 7: Bottom Navigation (Register Link)
+                Spacer(modifier = Modifier.weight(1f))
+                
+                Row(
+                    modifier = Modifier.padding(bottom = 24.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Don't have an account?",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = Outfit,
+                            color = Color.Gray
+                        )
+                    )
+                    TextButton(
+                        onClick = { 
+                            viewModel.onRegisterClicked()
+                            navController.navigate(ug.ac.ndejje.ndejjenest.navigation.Screen.Register.route) 
+                        }
+                    ) {
+                        Text(
+                            text = "Register",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontFamily = Outfit,
+                                color = PrimaryDarkBlue,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
+                }
             }
         }
     }
