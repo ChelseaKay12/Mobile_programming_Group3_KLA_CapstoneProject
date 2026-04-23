@@ -23,6 +23,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -34,6 +39,10 @@ fun RegisterScreen(
     val fullName by viewModel.fullName.collectAsState()
     val email by viewModel.email.collectAsState()
     val phoneNumber by viewModel.phoneNumber.collectAsState()
+    val password by viewModel.password.collectAsState()
+    val confirmPassword by viewModel.confirmPassword.collectAsState()
+    val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
+    val isConfirmPasswordVisible by viewModel.isConfirmPasswordVisible.collectAsState()
 
     Scaffold(
         containerColor = Color.White
@@ -149,7 +158,58 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
 
-                // Features 4–8 will be added here in upcoming steps
+                // Feature 4: Password Fields
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { viewModel.onPasswordChanged(it) },
+                    label = { Text("Password", fontFamily = Outfit) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
+                            val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                        }
+                    },
+                    visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryDarkBlue,
+                        focusedLabelColor = PrimaryDarkBlue
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
+
+                OutlinedTextField(
+                    value = confirmPassword,
+                    onValueChange = { viewModel.onConfirmPasswordChanged(it) },
+                    label = { Text("Confirm Password", fontFamily = Outfit) },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = { viewModel.toggleConfirmPasswordVisibility() }) {
+                            val icon = if (isConfirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                        }
+                    },
+                    visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = PrimaryDarkBlue,
+                        focusedLabelColor = PrimaryDarkBlue
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
+
+                // Features 5–8 will be added here in upcoming steps
             }
         }
     }

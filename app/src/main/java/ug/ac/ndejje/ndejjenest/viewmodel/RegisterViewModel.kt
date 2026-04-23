@@ -36,6 +36,34 @@ class RegisterViewModel : ViewModel() {
         _phoneNumber.value = newPhone
     }
 
+    private val _password = MutableStateFlow("")
+    val password: StateFlow<String> = _password.asStateFlow()
+
+    private val _confirmPassword = MutableStateFlow("")
+    val confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
+
+    private val _isPasswordVisible = MutableStateFlow(false)
+    val isPasswordVisible: StateFlow<Boolean> = _isPasswordVisible.asStateFlow()
+
+    private val _isConfirmPasswordVisible = MutableStateFlow(false)
+    val isConfirmPasswordVisible: StateFlow<Boolean> = _isConfirmPasswordVisible.asStateFlow()
+
+    fun onPasswordChanged(newPassword: String) {
+        _password.value = newPassword
+    }
+
+    fun onConfirmPasswordChanged(newConfirmPassword: String) {
+        _confirmPassword.value = newConfirmPassword
+    }
+
+    fun togglePasswordVisibility() {
+        _isPasswordVisible.value = !_isPasswordVisible.value
+    }
+
+    fun toggleConfirmPasswordVisibility() {
+        _isConfirmPasswordVisible.value = !_isConfirmPasswordVisible.value
+    }
+
     fun onRegisterClicked() {
         // Here we will eventually add logic to create a new user account
         println("Register clicked")
