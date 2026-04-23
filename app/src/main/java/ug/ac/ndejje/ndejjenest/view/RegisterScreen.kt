@@ -1,31 +1,64 @@
 package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.navigation.NavController
-import ug.ac.ndejje.ndejjenest.navigation.Screen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import ug.ac.ndejje.ndejjenest.R
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.viewmodel.RegisterViewModel
 
 @Composable
-fun RegisterScreen(navController: NavController) {
-    Scaffold { padding ->
-        Column(
+fun RegisterScreen(
+    navController: NavController,
+    viewModel: RegisterViewModel = viewModel() // Automatically creates the ViewModel
+) {
+    Scaffold(
+        containerColor = Color.White
+    ) { padding ->
+        // Box lets us layer elements, like placing the back button on top of the main column
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(padding)
         ) {
-            Text("Register Screen", fontSize = 24.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { navController.popBackStack() }) {
-                Text("Back to Login")
+            // Feature 1: Back Arrow Button
+            IconButton(
+                onClick = {
+                    // Goes back to the Login screen
+                    navController.popBackStack()
+                },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
+                    .align(Alignment.TopStart) // Positions it in the top-left corner
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = PrimaryDarkBlue // Using our brand color
+                )
+            }
+
+            // The remaining features (Branding, Fields, Button, Footer)
+            // will be added inside this Column
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                // Spacer to push content below the back button
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
+
+                // Features 2–7 will be added here in upcoming steps
             }
         }
     }
