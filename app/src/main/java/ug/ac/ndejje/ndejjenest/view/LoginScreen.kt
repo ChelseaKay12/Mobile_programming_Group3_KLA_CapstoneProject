@@ -2,7 +2,7 @@ package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,6 +15,10 @@ import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
+import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,6 +48,31 @@ fun LoginScreen(
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
     val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
+    
+    // --- New States for Firebase ---
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val isSuccess by viewModel.isSuccess.collectAsState()
+
+    val context = LocalContext.current
+
+    // Handle Success: Navigate to Home
+    LaunchedEffect(isSuccess) {
+        if (isSuccess) {
+            Toast.makeText(context, "Welcome Back!", Toast.LENGTH_SHORT).show()
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Login.route) { inclusive = true }
+            }
+        }
+    }
+
+    // Handle Error: Show Toast
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            viewModel.clearErrorMessage() // Reset error after showing
+        }
+    }
 
     Scaffold(
         containerColor = Color.White
@@ -65,7 +94,7 @@ fun LoginScreen(
                     .align(Alignment.TopStart) // Positions it in the top-left corner
             ) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = PrimaryDarkBlue // Using our brand color for the icon
                 )
@@ -234,6 +263,25 @@ fun LoginScreen(
                             )
                         )
                     }
+                }
+            }
+
+            // Feature 8: Loading Overlay
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    // Transparent dark background to dim the screen
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color.Black.copy(alpha = 0.3f)
+                    ) {}
+                    
+                    // The spinner
+                    CircularProgressIndicator(color = PrimaryDarkBlue)
                 }
             }
         }

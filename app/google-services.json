@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "186202294123",
+    "project_id": "ndejjenest-a17bf",
+    "storage_bucket": "ndejjenest-a17bf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186202294123:android:6a09e43537c7806a036e2e",
+        "android_client_info": {
+          "package_name": "ug.ac.ndejje.ndejjenest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV0Wq14GCHHVgB1hoKoMNmpzwpR9Fu6ig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
