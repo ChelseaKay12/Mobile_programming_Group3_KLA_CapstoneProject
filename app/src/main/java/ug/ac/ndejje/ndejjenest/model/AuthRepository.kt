@@ -33,11 +33,13 @@ class AuthRepository {
                         // We use the 'uid' as the document name so it matches the Auth account
                         firestore.collection("users").document(uid)
                             .set(user)
-                            .addOnSuccessListener {
-                                onComplete(true, "Registration successful!")
-                            }
-                            .addOnFailureListener { e ->
-                                onComplete(false, "Failed to save user details: ${e.message}")
+                            .addOnCompleteListener { firestoreTask ->
+                                if (firestoreTask.isSuccessful) {
+                                    onComplete(true, "Registration successful!")
+                                } else {
+                                    // This happens if Firestore rules are locked or Database isn't setup
+                                    onComplete(false, "Firestore Error: ${firestoreTask.exception?.message}")
+                                }
                             }
                     } else {
                         onComplete(false, "Failed to get user ID.")

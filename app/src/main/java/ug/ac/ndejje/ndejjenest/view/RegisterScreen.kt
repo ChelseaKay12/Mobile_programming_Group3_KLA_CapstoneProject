@@ -20,6 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
+import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
@@ -45,6 +49,31 @@ fun RegisterScreen(
     val isPasswordVisible by viewModel.isPasswordVisible.collectAsState()
     val isConfirmPasswordVisible by viewModel.isConfirmPasswordVisible.collectAsState()
     val isTermsAccepted by viewModel.isTermsAccepted.collectAsState()
+    
+    // --- New States for Firebase ---
+    val isLoading by viewModel.isLoading.collectAsState()
+    val errorMessage by viewModel.errorMessage.collectAsState()
+    val isSuccess by viewModel.isSuccess.collectAsState()
+
+    val context = LocalContext.current
+
+    // Handle Success: Navigate to Home
+    LaunchedEffect(isSuccess) {
+        if (isSuccess) {
+            Toast.makeText(context, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Register.route) { inclusive = true }
+            }
+        }
+    }
+
+    // Handle Error: Show Toast
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            viewModel.clearErrorMessage() // Reset error after showing
+        }
+    }
 
     Scaffold(
         containerColor = Color.White
@@ -287,6 +316,25 @@ fun RegisterScreen(
                             )
                         )
                     }
+                }
+            }
+
+            // Feature 8: Loading Overlay
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    // Transparent dark background to dim the screen
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color.Black.copy(alpha = 0.3f)
+                    ) {}
+                    
+                    // The spinner
+                    CircularProgressIndicator(color = PrimaryDarkBlue)
                 }
             }
         }
