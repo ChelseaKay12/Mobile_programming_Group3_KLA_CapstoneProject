@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,11 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.launch
 import ug.ac.ndejje.ndejjenest.model.Hostel
 import ug.ac.ndejje.ndejjenest.model.HostelRepository
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
@@ -32,6 +38,10 @@ import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 
 @Composable
 fun MapScreen(navController: NavController, hostelId: String? = null) {
+    // ---- ADDED: Context for launching external intents (Map Screen - Feature 5) ----
+    val context = LocalContext.current
+    // ---- END ADDED ----
+
     // Load all hostels
     val repository = remember { HostelRepository() }
     val allHostels = remember {
@@ -223,10 +233,113 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // ---- ADDED: Get Directions & My Location (Map Screen - Feature 5) ----
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Get Directions Button
+                        Button(
+                            onClick = {
+                                // Opens Google Maps with navigation to hostel
+                                // Falls back to browser if Google Maps not installed
+                                try {
+                                    val uri = Uri.parse(
+                                        "google.navigation:q=${hostel.latitude},${hostel.longitude}&mode=w"
+                                    )
+                                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                                    intent.setPackage("com.google.android.apps.maps")
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    // Fallback: open in browser
+                                    val webUri = Uri.parse(
+                                        "https://www.google.com/maps/dir/?api=1&destination=${hostel.latitude},${hostel.longitude}&travelmode=walking"
+                                    )
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
+                                }
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(48.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            Text(
+                                text = "Get Directions",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+
+                        // My Location Button
+                        IconButton(
+                            onClick = {
+                                // Opens Google Maps centered on hostel location
+                                // Falls back to browser if Google Maps not installed
+                                try {
+                                    val uri = Uri.parse(
+                                        "geo:${hostel.latitude},${hostel.longitude}?q=${hostel.latitude},${hostel.longitude}(${hostel.name})"
+                                    )
+                                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                                    intent.setPackage("com.google.android.apps.maps")
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    // Fallback: open in browser
+                                    val webUri = Uri.parse(
+                                        "https://www.google.com/maps/search/?api=1&query=${hostel.latitude},${hostel.longitude}"
+                                    )
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
+                                }
+                            },
+                            modifier = Modifier
+                                .size(48.dp)
+                                .background(PrimaryDarkBlue, RoundedCornerShape(24.dp))
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.LocationOn,
+                                contentDescription = "My Location",
+                                tint = Color.White,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                    // ---- END ADDED ----
                 }
             }
         }
         // ---- END ENHANCED ----
+
+        // ---- ADDED: Floating My Location Button (Map Screen - Feature 5) ----
+        FloatingActionButton(
+            onClick = {
+                // Reset camera to default Ndejje University area
+                kotlinx.coroutines.MainScope().launch {
+                    cameraPositionState.animate(
+                        update = CameraUpdateFactory.newLatLngZoom(
+                            LatLng(0.5840, 32.5330), 14f
+                        ),
+                        durationMs = 800
+                    )
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp),
+            containerColor = Color.White,
+            shape = CircleShape
+        ) {
+            Icon(
+                imageVector = Icons.Default.MyLocation,
+                contentDescription = "Center Map",
+                tint = PrimaryDarkBlue
+            )
+        }
+        // ---- END ADDED ----
     }
 }
 
