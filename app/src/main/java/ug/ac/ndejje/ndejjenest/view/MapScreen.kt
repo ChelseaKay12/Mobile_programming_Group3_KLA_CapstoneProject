@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -138,7 +140,7 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
             }
         }
 
-        // ---- Bottom Info Card (Feature 4 placeholder - shows when a hostel is selected) ----
+        // ---- ENHANCED: Bottom Info Card (Map Screen - Feature 4) ----
         if (selectedHostel != null) {
             val hostel = selectedHostel!!
             Card(
@@ -155,21 +157,76 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    Text(
-                        text = hostel.name,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = hostel.location,
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
+                    // Hostel info row with image and details
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Image Placeholder
+                        Box(
+                            modifier = Modifier
+                                .size(72.dp)
+                                .background(Color.LightGray, RoundedCornerShape(12.dp)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Home,
+                                contentDescription = null,
+                                tint = Color.DarkGray,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        // Hostel Details
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = hostel.name,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = PrimaryDarkBlue
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${hostel.location}, Near Ndejje University",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                            // Distance indicator
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(8.dp)
+                                        .background(Color(0xFF4CAF50), CircleShape)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "5 mins (1.3 km) away",
+                                    fontSize = 12.sp,
+                                    color = Color(0xFF4CAF50)
+                                )
+                            }
+                        }
+
+                        // Navigate to details chevron
+                        IconButton(
+                            onClick = {
+                                navController.navigate("hostel_details/${hostel.id}")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = "View Details",
+                                tint = PrimaryDarkBlue
+                            )
+                        }
+                    }
                 }
             }
         }
+        // ---- END ENHANCED ----
     }
 }
 
