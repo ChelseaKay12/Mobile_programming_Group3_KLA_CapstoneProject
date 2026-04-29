@@ -60,6 +60,11 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
 
+    // ---- ADDED: Google Maps dependencies (Map Screen - Feature 2) ----
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+    // ---- END ADDED ----
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
