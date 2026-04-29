@@ -2,6 +2,8 @@ package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -78,25 +80,16 @@ fun HomeScreen(
                     onViewAllClick = { /* Handle view all */ }
                 )
                 
-                // 2-column Grid Layout for Hostels
-                featuredHostels.chunked(2).forEach { rowItems ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        rowItems.forEach { hostel ->
-                            HostelCard(
-                                hostel = hostel,
-                                modifier = Modifier.weight(1f),
-                                onClick = { /* Handle hostel click */ }
-                            )
-                        }
-                        // Fill empty space if there's only 1 item in the last row
-                        if (rowItems.size == 1) {
-                            Spacer(modifier = Modifier.weight(1f))
-                        }
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(featuredHostels) { hostel ->
+                        HostelCard(
+                            hostel = hostel,
+                            modifier = Modifier.width(180.dp),
+                            onClick = { /* Handle hostel click */ }
+                        )
                     }
                 }
 
