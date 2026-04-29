@@ -2,13 +2,13 @@ package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -179,13 +179,73 @@ fun HostelDetailsScreen(
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
+
+                    // Feature 5: Amenities Section
+                    Text(
+                        text = "Amenities",
+                        fontSize = 18.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = PrimaryDarkBlue
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(end = 20.dp)
+                    ) {
+                        items(item.amenities) { amenity ->
+                            AmenityItem(amenity = amenity)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
                     
                     Text(
-                        text = "Feature 5, 6, 7 details will go here",
+                        text = "Feature 6, 7 details will go here",
                         modifier = Modifier.padding(top = 10.dp)
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun AmenityItem(amenity: String) {
+    val icon = when (amenity.lowercase()) {
+        "wifi", "high-speed wifi" -> Icons.Default.Wifi
+        "water", "constant water" -> Icons.Default.WaterDrop
+        "cctv", "security", "24/7 guard", "gated", "high security" -> Icons.Default.Security
+        "electricity", "backup power" -> Icons.Default.Bolt
+        "gym" -> Icons.Default.FitnessCenter
+        "pool" -> Icons.Default.Pool
+        "laundry" -> Icons.Default.LocalLaundryService
+        "study hall" -> Icons.Default.School
+        else -> Icons.Default.CheckCircle
+    }
+
+    Column(
+        modifier = Modifier
+            .width(80.dp)
+            .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = PrimaryDarkBlue,
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = amenity,
+            fontSize = 11.sp,
+            color = PrimaryDarkBlue,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            maxLines = 1,
+            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+        )
     }
 }
