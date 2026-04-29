@@ -34,9 +34,21 @@ fun AppNavigation() {
             val hostelId = backStackEntry.arguments?.getString("hostelId")
             HostelDetailsScreen(navController = navController, hostelId = hostelId)
         }
-        composable(Screen.Map.route) {
-            MapScreen(navController = navController)
+        // ---- MODIFIED: Map route now passes optional hostelId (Map Screen - Feature 3) ----
+        composable(
+            route = Screen.Map.route,
+            arguments = listOf(
+                androidx.navigation.navArgument("hostelId") {
+                    type = androidx.navigation.NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val hostelId = backStackEntry.arguments?.getString("hostelId")
+            MapScreen(navController = navController, hostelId = hostelId)
         }
+        // ---- END MODIFIED ----
         composable(Screen.SavedHostels.route) {
             SavedHostelsScreen(navController = navController)
         }

@@ -9,7 +9,13 @@ sealed class Screen(val route: String) {
     object HostelDetails : Screen("hostel_details/{hostelId}") {
         fun createRoute(hostelId: String) = "hostel_details/$hostelId"
     }
-    object Map : Screen("map")
+    // ---- MODIFIED: Map route now accepts optional hostelId (Map Screen - Feature 3) ----
+    object Map : Screen("map?hostelId={hostelId}") {
+        fun createRoute(hostelId: String? = null): String {
+            return if (hostelId != null) "map?hostelId=$hostelId" else "map"
+        }
+    }
+    // ---- END MODIFIED ----
     object SavedHostels : Screen("saved_hostels")
     object Profile : Screen("profile")
 }
