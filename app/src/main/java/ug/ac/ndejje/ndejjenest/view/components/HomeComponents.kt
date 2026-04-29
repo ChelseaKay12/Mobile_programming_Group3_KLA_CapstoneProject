@@ -5,12 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.navigation.NavController
+import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -365,6 +364,58 @@ fun HostelCardHorizontal(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
+    navController: NavController,
+    currentRoute: String?
+) {
+    NavigationBar(
+        containerColor = Color.White,
+        tonalElevation = 8.dp,
+        modifier = Modifier.height(80.dp)
+    ) {
+        val items = listOf(
+            Triple("Home", Icons.Default.Home, Screen.Home.route),
+            Triple("Saved", Icons.Default.FavoriteBorder, Screen.SavedHostels.route),
+            Triple("Profile", Icons.Default.Person, Screen.Profile.route)
+        )
+
+        items.forEach { (label, icon, route) ->
+            val isSelected = currentRoute == route
+            NavigationBarItem(
+                selected = isSelected,
+                onClick = {
+                    if (currentRoute != route) {
+                        navController.navigate(route) {
+                            popUpTo(Screen.Home.route) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                },
+                icon = {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = label,
+                        tint = if (isSelected) PrimaryYellow else Color.Gray
+                    )
+                },
+                label = {
+                    Text(
+                        text = label,
+                        color = if (isSelected) PrimaryDarkBlue else Color.Gray,
+                        fontSize = 12.sp,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                    )
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = PrimaryYellow.copy(alpha = 0.1f)
+                )
+            )
         }
     }
 }

@@ -10,7 +10,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.view.components.BottomNavigationBar
 import ug.ac.ndejje.ndejjenest.view.components.BrandingHeader
 import ug.ac.ndejje.ndejjenest.view.components.CategoryChips
 import ug.ac.ndejje.ndejjenest.view.components.HostelCard
@@ -24,13 +26,16 @@ fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    
     val searchQuery by viewModel.searchQuery.collectAsState()
     var selectedCategory by remember { mutableStateOf("All") }
     val categories = listOf("All", "Bombo", "Luwero", "Kampala")
 
     Scaffold(
         bottomBar = {
-            // TODO: Implement Bottom Navigation in later feature
+            BottomNavigationBar(navController = navController, currentRoute = currentRoute)
         }
     ) { paddingValues ->
         Column(
