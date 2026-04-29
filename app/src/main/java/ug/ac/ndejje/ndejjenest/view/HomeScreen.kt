@@ -68,42 +68,42 @@ fun HomeScreen(
                 )
             }
 
-            // Main Content Area (White background) - Scrollable
+            val featuredHostels by viewModel.featuredHostels.collectAsState()
+
+            SectionHeader(
+                title = "Featured Hostels",
+                onViewAllClick = { /* Handle view all */ }
+            )
+            
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(featuredHostels) { hostel ->
+                    HostelCard(
+                        hostel = hostel,
+                        modifier = Modifier.width(180.dp),
+                        onClick = { /* Handle hostel click */ }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            val recommendedHostels by viewModel.recommendedHostels.collectAsState()
+
+            SectionHeader(
+                title = "Recommended for you",
+                onViewAllClick = { /* Handle view all */ }
+            )
+
+            // Main Content Area (White background) - Scrollable Cards
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                val featuredHostels by viewModel.featuredHostels.collectAsState()
-
-                SectionHeader(
-                    title = "Featured Hostels",
-                    onViewAllClick = { /* Handle view all */ }
-                )
-                
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 20.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(featuredHostels) { hostel ->
-                        HostelCard(
-                            hostel = hostel,
-                            modifier = Modifier.width(180.dp),
-                            onClick = { /* Handle hostel click */ }
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-                
-                val recommendedHostels by viewModel.recommendedHostels.collectAsState()
-
-                SectionHeader(
-                    title = "Recommended for you",
-                    onViewAllClick = { /* Handle view all */ }
-                )
-
                 recommendedHostels.forEach { hostel ->
                     HostelCardHorizontal(
                         hostel = hostel,
