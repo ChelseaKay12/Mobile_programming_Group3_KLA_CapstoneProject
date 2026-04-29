@@ -32,7 +32,7 @@ fun HomeScreen(
     val currentRoute = navBackStackEntry?.destination?.route
     
     val searchQuery by viewModel.searchQuery.collectAsState()
-    var selectedCategory by remember { mutableStateOf("All") }
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
     val categories = listOf("All", "Bombo", "Luwero", "Kampala")
 
     Scaffold(
@@ -64,7 +64,7 @@ fun HomeScreen(
                 CategoryChips(
                     categories = categories,
                     selectedCategory = selectedCategory,
-                    onCategorySelected = { selectedCategory = it }
+                    onCategorySelected = { viewModel.onCategorySelected(it) }
                 )
             }
 
