@@ -14,6 +14,7 @@ import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.view.components.BrandingHeader
 import ug.ac.ndejje.ndejjenest.view.components.CategoryChips
 import ug.ac.ndejje.ndejjenest.view.components.HostelCard
+import ug.ac.ndejje.ndejjenest.view.components.HostelCardHorizontal
 import ug.ac.ndejje.ndejjenest.view.components.SearchBarWithFilter
 import ug.ac.ndejje.ndejjenest.view.components.SectionHeader
 import ug.ac.ndejje.ndejjenest.viewmodel.HomeViewModel
@@ -96,7 +97,21 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 
-                // TODO: Recommended for you (Feature 4)
+                val recommendedHostels by viewModel.recommendedHostels.collectAsState()
+
+                SectionHeader(
+                    title = "Recommended for you",
+                    onViewAllClick = { /* Handle view all */ }
+                )
+
+                recommendedHostels.forEach { hostel ->
+                    HostelCardHorizontal(
+                        hostel = hostel,
+                        onClick = { /* Handle hostel click */ }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }

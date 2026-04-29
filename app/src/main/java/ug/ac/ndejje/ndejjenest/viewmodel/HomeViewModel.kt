@@ -16,12 +16,16 @@ class HomeViewModel : ViewModel() {
     private val _featuredHostels = MutableStateFlow<List<Hostel>>(emptyList())
     val featuredHostels = _featuredHostels.asStateFlow()
 
+    private val _recommendedHostels = MutableStateFlow<List<Hostel>>(emptyList())
+    val recommendedHostels = _recommendedHostels.asStateFlow()
+
     init {
         loadData()
     }
 
     private fun loadData() {
         _featuredHostels.value = repository.getFeaturedHostels()
+        _recommendedHostels.value = repository.getRecommendedHostels()
     }
 
     fun onSearchQueryChange(query: String) {
