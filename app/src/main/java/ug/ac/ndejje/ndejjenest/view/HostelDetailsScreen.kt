@@ -20,6 +20,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.ui.res.painterResource
+import ug.ac.ndejje.ndejjenest.R
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
@@ -221,11 +223,72 @@ fun HostelDetailsScreen(
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
-                    
+
+                    // Feature 7: Contact & Map Actions
                     Text(
-                        text = "Feature 7 details will go here",
-                        modifier = Modifier.padding(top = 10.dp)
+                        text = "Contact Landlord",
+                        fontSize = 18.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = PrimaryDarkBlue
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Phone Number
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Phone,
+                                contentDescription = "Call",
+                                tint = Color(0xFF4CAF50), // Green for call
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = item.phoneNumber,
+                                fontSize = 20.sp,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                color = PrimaryDarkBlue
+                            )
+                        }
+
+                        // WhatsApp Button
+                        IconButton(
+                            onClick = { /* Handle WhatsApp */ },
+                            modifier = Modifier.size(60.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.whatsapp),
+                                contentDescription = "WhatsApp",
+                                tint = Color.Unspecified, // Use original image colors
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // View on Map Button
+                    Button(
+                        onClick = { navController.navigate(Screen.Map.route) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+                        shape = RoundedCornerShape(28.dp)
+                    ) {
+                        Text(
+                            text = "View on Map",
+                            fontSize = 16.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
