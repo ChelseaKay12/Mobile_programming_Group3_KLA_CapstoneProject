@@ -4,8 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -104,9 +106,12 @@ fun HostelDetailsScreen(
                 }
             } else {
                 val item = hostel!!
+                // Main Content - Scrollable area
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
                         .padding(20.dp)
                 ) {
                     // Feature 4: Core Hostel Information
@@ -199,9 +204,26 @@ fun HostelDetailsScreen(
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))
+
+                    // Feature 6: Description Section
+                    Text(
+                        text = "About Hostel",
+                        fontSize = 18.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = PrimaryDarkBlue
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = item.description,
+                        fontSize = 14.sp,
+                        color = Color.Gray,
+                        lineHeight = 22.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
                     
                     Text(
-                        text = "Feature 6, 7 details will go here",
+                        text = "Feature 7 details will go here",
                         modifier = Modifier.padding(top = 10.dp)
                     )
                 }
