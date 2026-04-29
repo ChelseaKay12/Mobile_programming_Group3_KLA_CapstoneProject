@@ -44,7 +44,6 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = paddingValues.calculateBottomPadding())
-                .verticalScroll(rememberScrollState())
         ) {
             // Top Section with Dark Blue Background
             Column(
@@ -69,9 +68,12 @@ fun HomeScreen(
                 )
             }
 
-            // Main Content Area (White background)
+            // Main Content Area (White background) - Scrollable
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
                 val featuredHostels by viewModel.featuredHostels.collectAsState()
 
