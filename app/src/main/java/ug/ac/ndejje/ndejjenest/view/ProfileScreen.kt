@@ -5,16 +5,26 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import ug.ac.ndejje.ndejjenest.navigation.Screen
+import ug.ac.ndejje.ndejjenest.view.components.BottomNavigationBar
 
 @Composable
 fun ProfileScreen(navController: NavController) {
-    Scaffold { padding ->
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController = navController, currentRoute = currentRoute)
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
