@@ -6,6 +6,9 @@ data class Hostel(
     val location: String,
     val price: String,
     val rating: Double,
-    val imageRes: Int? = null, // Placeholder for resource ID
+    val description: String = "",
+    val amenities: List<String> = emptyList(),
+    val phoneNumber: String = "0756 123 456",
+    val imageRes: Int? = null,
     val imageUrl: String? = null
 )

@@ -83,7 +83,7 @@ fun HomeScreen(
                     HostelCard(
                         hostel = hostel,
                         modifier = Modifier.width(180.dp),
-                        onClick = { /* Handle hostel click */ }
+                        onClick = { navController.navigate("hostel_details/${hostel.id}") }
                     )
                 }
             }
@@ -107,7 +107,7 @@ fun HomeScreen(
                 recommendedHostels.forEach { hostel ->
                     HostelCardHorizontal(
                         hostel = hostel,
-                        onClick = { /* Handle hostel click */ }
+                        onClick = { navController.navigate("hostel_details/${hostel.id}") }
                     )
                 }
 
