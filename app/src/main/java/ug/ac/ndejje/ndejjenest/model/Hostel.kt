@@ -9,6 +9,8 @@ data class Hostel(
     val description: String = "",
     val amenities: List<String> = emptyList(),
     val phoneNumber: String = "0756 123 456",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
     val imageRes: Int? = null,
     val imageUrl: String? = null
 )
