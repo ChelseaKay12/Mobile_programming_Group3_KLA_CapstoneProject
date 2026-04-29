@@ -3,9 +3,12 @@ package ug.ac.ndejje.ndejjenest.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -94,16 +97,94 @@ fun HostelDetailsScreen(
                 }
             }
 
-            // Rest of the UI will follow in next features
+            // Main Content
             if (hostel == null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = PrimaryYellow)
                 }
             } else {
-                Text(
-                    text = "Feature 4, 5, 6, 7 details for ${hostel?.name} will go here",
-                    modifier = Modifier.padding(20.dp)
-                )
+                val item = hostel!!
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    // Feature 4: Core Hostel Information
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = item.name,
+                                fontSize = 24.sp,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                color = PrimaryDarkBlue
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.LocationOn,
+                                    contentDescription = null,
+                                    tint = Color.Gray,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = item.location,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+
+                        // Rating
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .background(PrimaryYellow.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = null,
+                                tint = PrimaryYellow,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = item.rating.toString(),
+                                fontSize = 14.sp,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                color = PrimaryDarkBlue
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Price Section
+                    Text(
+                        text = "Price",
+                        fontSize = 16.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+                        color = PrimaryDarkBlue
+                    )
+                    Text(
+                        text = item.price,
+                        fontSize = 20.sp,
+                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                        color = PrimaryYellow
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    Text(
+                        text = "Feature 5, 6, 7 details will go here",
+                        modifier = Modifier.padding(top = 10.dp)
+                    )
+                }
             }
         }
     }
