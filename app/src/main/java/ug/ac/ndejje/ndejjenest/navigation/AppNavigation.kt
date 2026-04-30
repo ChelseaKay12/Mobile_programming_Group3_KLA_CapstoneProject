@@ -55,5 +55,8 @@ fun AppNavigation() {
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController)
         }
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(navController = navController)
+        }
     }
 }

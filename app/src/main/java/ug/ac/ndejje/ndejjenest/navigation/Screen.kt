@@ -18,4 +18,5 @@ sealed class Screen(val route: String) {
     // ---- END MODIFIED ----
     object SavedHostels : Screen("saved_hostels")
     object Profile : Screen("profile")
+    object EditProfile : Screen("edit_profile")
 }
