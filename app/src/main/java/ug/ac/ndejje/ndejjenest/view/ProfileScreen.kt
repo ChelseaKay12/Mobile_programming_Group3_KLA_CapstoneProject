@@ -1,24 +1,43 @@
 package ug.ac.ndejje.ndejjenest.view
 
+// ---- REWRITTEN: Full Profile Screen (Profile Screen - Feature 1) ----
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.firebase.auth.FirebaseAuth
 import ug.ac.ndejje.ndejjenest.navigation.Screen
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.view.components.BottomNavigationBar
 
 @Composable
 fun ProfileScreen(navController: NavController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    // ---- ADDED: Get current user from Firebase Auth ----
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    val userName = currentUser?.displayName ?: currentUser?.email?.substringBefore("@") ?: "Student"
+    val userEmail = currentUser?.email ?: "student@ndejje.ac.ug"
+    // ---- END ADDED ----
 
     Scaffold(
         bottomBar = {
@@ -28,24 +47,90 @@ fun ProfileScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(bottom = padding.calculateBottomPadding())
+                .background(Color(0xFFF5F5F5))
         ) {
-            Text("Profile Screen", fontSize = 24.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { 
-                // Logout and go to login
-                navController.navigate(Screen.Login.route) {
-                    popUpTo(Screen.Home.route) { inclusive = true }
+            // ---- Feature 1: Profile Header (Dark Section) ----
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                    .background(PrimaryDarkBlue)
+                    .padding(top = 48.dp, bottom = 32.dp)
+            ) {
+                // Settings Icon (top-right)
+                IconButton(
+                    onClick = { /* Handle settings */ },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(end = 16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = Color.White
+                    )
                 }
-            }) {
-                Text("Log Out")
+
+                // Avatar + Name + Email (centered)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Avatar Circle
+                    Box(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .border(3.dp, PrimaryYellow, CircleShape)
+                            .clip(CircleShape)
+                            .background(Color.Gray),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Profile Picture",
+                            tint = Color.White,
+                            modifier = Modifier.size(50.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // User Name
+                    Text(
+                        text = userName,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // User Email
+                    Text(
+                        text = userEmail,
+                        fontSize = 14.sp,
+                        color = Color.White.copy(alpha = 0.7f),
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Feature 2, 3, 4 placeholders will go below
+                }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = { navController.popBackStack() }) {
-                Text("Back to Home")
-            }
+
+            // Remaining features placeholder
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Features 2, 3, 4 will go here",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = Color.Gray
+            )
         }
     }
 }
+
+// ---- END REWRITTEN ----
