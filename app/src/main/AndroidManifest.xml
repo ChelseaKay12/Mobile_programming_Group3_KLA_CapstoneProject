@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- ADDED: Permissions for Google Maps (Map Screen - Feature 2) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- END ADDED -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NdejjeNest">
+
+        <!-- ADDED: Google Maps API Key (Map Screen - Feature 2) -->
+        <!-- TODO: Replace YOUR_GOOGLE_MAPS_API_KEY_HERE with your actual API key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_API_KEY_HERE" />
+        <!-- END ADDED -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

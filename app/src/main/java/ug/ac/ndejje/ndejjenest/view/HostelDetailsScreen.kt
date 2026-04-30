@@ -271,9 +271,9 @@ fun HostelDetailsScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // View on Map Button
+                    // ---- MODIFIED: Now passes hostelId to Map (Map Screen - Feature 3) ----
                     Button(
-                        onClick = { navController.navigate(Screen.Map.route) },
+                        onClick = { navController.navigate(Screen.Map.createRoute(item.id)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
