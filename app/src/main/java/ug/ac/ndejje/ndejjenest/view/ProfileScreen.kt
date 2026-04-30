@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.view.components.BottomNavigationBar
 import ug.ac.ndejje.ndejjenest.viewmodel.ProfileViewModel
 
@@ -158,14 +159,33 @@ fun ProfileScreen(
                     color = Color.LightGray.copy(alpha = 0.5f)
                 )
 
-                // Feature 4 placeholder (Logout button)
+                // Feature 4: Logout button
                 Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    text = "Feature 4 will go here",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    color = Color.Gray
-                )
+                
+                Button(
+                    onClick = {
+                        viewModel.signOut()
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryDarkBlue,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        text = "Log Out",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
             }
             // ---- END ADDED ----
         }
