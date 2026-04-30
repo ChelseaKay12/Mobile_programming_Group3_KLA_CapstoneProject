@@ -10,6 +10,11 @@ import ug.ac.ndejje.ndejjenest.navigation.AppNavigation
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // ---- TEMPORARY: Upload hostel data to Firestore (Run once) ----
+        // ug.ac.ndejje.ndejjenest.util.DataMigrationManager().uploadMockDataToFirestore()
+        // ---- END TEMPORARY ----
+
         enableEdgeToEdge()
         setContent {
             NdejjeNestTheme {
