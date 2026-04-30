@@ -150,7 +150,7 @@ fun ProfileScreen(
                 ProfileMenuItem(
                     icon = Icons.Default.Edit,
                     label = "Edit Profile",
-                    onClick = { /* Navigate to Edit Profile */ }
+                    onClick = { navController.navigate(Screen.EditProfile.route) }
                 )
 
                 Divider(
