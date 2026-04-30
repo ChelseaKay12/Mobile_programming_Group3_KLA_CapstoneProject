@@ -120,14 +120,22 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Feature 2, 3, 4 placeholders will go below
+                    // ---- ADDED: Stats Row (Profile Screen - Feature 2) ----
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        // Saved Stat
+                        StatItem(count = "12", label = "Saved")
+                    }
+                    // ---- END ADDED ----
                 }
             }
 
             // Remaining features placeholder
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "Features 2, 3, 4 will go here",
+                text = "Features 3, 4 will go here",
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 color = Color.Gray
@@ -135,5 +143,27 @@ fun ProfileScreen(
         }
     }
 }
+
+// ---- ADDED: StatItem composable (Profile Screen - Feature 2) ----
+@Composable
+fun StatItem(count: String, label: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = count,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = label,
+            fontSize = 12.sp,
+            color = Color.White.copy(alpha = 0.7f)
+        )
+    }
+}
+// ---- END ADDED ----
 
 // ---- END REWRITTEN ----
