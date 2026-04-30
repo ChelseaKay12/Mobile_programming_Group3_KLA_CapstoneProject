@@ -45,62 +45,6 @@ fun HostelDetailsScreen(
                 .fillMaxSize()
                 .padding(bottom = padding.calculateBottomPadding())
         ) {
-            // Feature 3: Image Header & Overlay Toolbar
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-            ) {
-                // Image Placeholder
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.LightGray)
-                ) {
-                    Text(
-                        text = "Image Placeholder",
-                        modifier = Modifier.align(Alignment.Center),
-                        color = Color.DarkGray
-                    )
-                }
-
-                // Toolbar Icons
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { navController.popBackStack() },
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color.White, CircleShape)
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                            tint = PrimaryDarkBlue
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { /* Handle favorite */ },
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color.White, CircleShape)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.FavoriteBorder,
-                            contentDescription = "Favorite",
-                            tint = PrimaryDarkBlue
-                        )
-                    }
-                }
-            }
-
             // Main Content
             if (hostel == null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -108,6 +52,70 @@ fun HostelDetailsScreen(
                 }
             } else {
                 val item = hostel!!
+                
+                // Image Header (Moved inside the 'else' block so 'item' is defined)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                ) {
+                    // Live Image from Firestore
+                    coil.compose.AsyncImage(
+                        model = item.imageUrl,
+                        contentDescription = item.name,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                    )
+                    
+                    // Dark Gradient overlay for the toolbar
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .background(
+                                brush = androidx.compose.ui.graphics.Brush.verticalGradient(
+                                    colors = listOf(Color.Black.copy(alpha = 0.4f), Color.Transparent)
+                                )
+                            )
+                    )
+
+                    // Toolbar Icons
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .statusBarsPadding()
+                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = { navController.popBackStack() },
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(Color.White, CircleShape)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint = PrimaryDarkBlue
+                            )
+                        }
+
+                        IconButton(
+                            onClick = { /* Handle favorite */ },
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(Color.White, CircleShape)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = "Favorite",
+                                tint = PrimaryDarkBlue
+                            )
+                        }
+                    }
+                }
+
                 // Main Content - Scrollable area
                 Column(
                     modifier = Modifier
@@ -116,7 +124,7 @@ fun HostelDetailsScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(20.dp)
                 ) {
-                    // Feature 4: Core Hostel Information
+                    // Core Hostel Information
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -127,7 +135,8 @@ fun HostelDetailsScreen(
                                 text = item.name,
                                 fontSize = 24.sp,
                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                color = PrimaryDarkBlue
+                                color = PrimaryDarkBlue,
+                                fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -141,7 +150,8 @@ fun HostelDetailsScreen(
                                 Text(
                                     text = item.location,
                                     fontSize = 14.sp,
-                                    color = Color.Gray
+                                    color = Color.Gray,
+                                    fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                                 )
                             }
                         }
@@ -164,7 +174,8 @@ fun HostelDetailsScreen(
                                 text = item.rating.toString(),
                                 fontSize = 14.sp,
                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                color = PrimaryDarkBlue
+                                color = PrimaryDarkBlue,
+                                fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                         }
                     }
@@ -176,23 +187,26 @@ fun HostelDetailsScreen(
                         text = "Price",
                         fontSize = 16.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
-                        color = PrimaryDarkBlue
+                        color = PrimaryDarkBlue,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Text(
                         text = item.price,
                         fontSize = 20.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryYellow
+                        color = PrimaryYellow,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Feature 5: Amenities Section
+                    // Amenities Section
                     Text(
                         text = "Amenities",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = PrimaryDarkBlue,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     
@@ -207,29 +221,32 @@ fun HostelDetailsScreen(
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    // Feature 6: Description Section
+                    // Description Section
                     Text(
                         text = "About Hostel",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = PrimaryDarkBlue,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = item.description,
                         fontSize = 14.sp,
                         color = Color.Gray,
-                        lineHeight = 22.sp
+                        lineHeight = 22.sp,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    // Feature 7: Contact & Map Actions
+                    // Contact & Map Actions
                     Text(
                         text = "Contact Landlord",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = PrimaryDarkBlue,
+                        fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     

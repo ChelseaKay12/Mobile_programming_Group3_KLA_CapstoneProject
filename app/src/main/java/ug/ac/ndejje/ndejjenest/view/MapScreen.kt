@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -37,32 +38,37 @@ import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 
 @Composable
-fun MapScreen(navController: NavController, hostelId: String? = null) {
+fun MapScreen(
+    navController: NavController, 
+    hostelId: String? = null,
+    viewModel: ug.ac.ndejje.ndejjenest.viewmodel.HomeViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     // ---- ADDED: Context for launching external intents (Map Screen - Feature 5) ----
     val context = LocalContext.current
     // ---- END ADDED ----
 
-    // Load all hostels
-    val repository = remember { HostelRepository() }
-    val allHostels = remember {
-        repository.getFeaturedHostels() + repository.getRecommendedHostels()
-    }
+    // Live data from HomeViewModel (which now fetches from Firestore)
+    val featuredHostels by viewModel.featuredHostels.collectAsState()
+    val recommendedHostels by viewModel.recommendedHostels.collectAsState()
+    val allHostels = featuredHostels + recommendedHostels
 
-    // Track the selected hostel (default to the one passed via navigation)
+    // Track the selected hostel (Only pre-select if a specific ID was passed)
     var selectedHostel by remember {
-        mutableStateOf(allHostels.find { it.id == hostelId })
+        mutableStateOf<ug.ac.ndejje.ndejjenest.model.Hostel?>(null)
     }
 
-    // Determine initial camera position
-    val initialTarget = if (selectedHostel != null) {
-        LatLng(selectedHostel!!.latitude, selectedHostel!!.longitude)
-    } else {
-        // Default: Ndejje University area (Bombo)
-        LatLng(0.5840, 32.5330)
+    // Effect to update selectedHostel when data loads or hostelId changes
+    LaunchedEffect(allHostels, hostelId) {
+        if (hostelId != null && selectedHostel == null) {
+            selectedHostel = allHostels.find { it.id == hostelId }
+        }
     }
+
+    // Default center: Ndejje University area
+    val defaultLocation = LatLng(0.6060, 32.5320)
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(initialTarget, 14f)
+        position = CameraPosition.fromLatLngZoom(defaultLocation, 14f)
     }
 
     // When a hostel is selected, animate the camera to it
@@ -172,20 +178,15 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Image Placeholder
-                        Box(
+                        // Live Image from Firestore
+                        coil.compose.AsyncImage(
+                            model = hostel.imageUrl,
+                            contentDescription = hostel.name,
                             modifier = Modifier
                                 .size(72.dp)
-                                .background(Color.LightGray, RoundedCornerShape(12.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Home,
-                                contentDescription = null,
-                                tint = Color.DarkGray,
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
+                                .clip(RoundedCornerShape(12.dp)),
+                            contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                        )
 
                         Spacer(modifier = Modifier.width(12.dp))
 
@@ -195,13 +196,15 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
                                 text = hostel.name,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = PrimaryDarkBlue
+                                color = PrimaryDarkBlue,
+                                fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "${hostel.location}, Near Ndejje University",
                                 fontSize = 12.sp,
-                                color = Color.Gray
+                                color = Color.Gray,
+                                fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             // Distance indicator
@@ -215,7 +218,8 @@ fun MapScreen(navController: NavController, hostelId: String? = null) {
                                 Text(
                                     text = "5 mins (1.3 km) away",
                                     fontSize = 12.sp,
-                                    color = Color(0xFF4CAF50)
+                                    color = Color(0xFF4CAF50),
+                                    fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                                 )
                             }
                         }

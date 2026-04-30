@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ug.ac.ndejje.ndejjenest.model.Hostel
+import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 
@@ -214,26 +216,49 @@ fun HostelCard(
     Card(
         modifier = modifier
             .padding(bottom = 10.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp), // Slightly more rounded
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier.clickable { onClick() }
         ) {
-            // Image Placeholder
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(130.dp)
-                    .background(Color.LightGray)
-            ) {
-                // If we had image resources, we would use Image here
-                Text(
-                    text = "Image",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.DarkGray
+            // Live Image from Firestore
+            Box(modifier = Modifier.fillMaxWidth().height(140.dp)) {
+                coil.compose.AsyncImage(
+                    model = hostel.imageUrl,
+                    contentDescription = hostel.name,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
                 )
+                
+                // Rating Badge Overlay
+                Surface(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.TopEnd),
+                    color = Color.White.copy(alpha = 0.9f),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = PrimaryYellow,
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = hostel.rating.toString(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = Outfit
+                        )
+                    }
+                }
             }
 
             Column(
@@ -241,45 +266,37 @@ fun HostelCard(
             ) {
                 Text(
                     text = hostel.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = PrimaryDarkBlue,
+                    fontFamily = Outfit,
                     maxLines = 1
                 )
-                Text(
-                    text = hostel.location,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(12.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = hostel.location,
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        fontFamily = Outfit
+                    )
+                }
                 
                 Spacer(modifier = Modifier.height(8.dp))
                 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = hostel.price,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue
-                    )
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null,
-                            tint = PrimaryYellow,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = hostel.rating.toString(),
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
+                Text(
+                    text = hostel.price,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryYellow,
+                    fontFamily = Outfit
+                )
             }
         }
     }
@@ -294,75 +311,79 @@ fun HostelCardHorizontal(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
                 .clickable { onClick() }
-                .padding(10.dp),
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Image Placeholder
-            Box(
+            // Live Image from Firestore
+            coil.compose.AsyncImage(
+                model = hostel.imageUrl,
+                contentDescription = hostel.name,
                 modifier = Modifier
-                    .size(100.dp)
-                    .background(Color.LightGray, RoundedCornerShape(12.dp))
-            ) {
-                Text(
-                    text = "Image",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.DarkGray,
-                    fontSize = 12.sp
-                )
-            }
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(15.dp)),
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = hostel.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = PrimaryDarkBlue
-                )
-                Text(
-                    text = hostel.location,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = hostel.price,
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = hostel.name,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = PrimaryDarkBlue,
+                        fontFamily = Outfit,
+                        modifier = Modifier.weight(1f)
                     )
+                    
+                    // Small Rating
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = null,
                             tint = PrimaryYellow,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = hostel.rating.toString(),
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = Outfit
                         )
                     }
                 }
+
+                Text(
+                    text = hostel.location,
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                    fontFamily = Outfit
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                Text(
+                    text = hostel.price,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryYellow,
+                    fontFamily = Outfit
+                )
             }
         }
     }

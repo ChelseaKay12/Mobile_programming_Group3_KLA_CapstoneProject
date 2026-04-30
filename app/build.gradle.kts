@@ -60,9 +60,11 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
 
-    // ---- ADDED: Google Maps dependencies (Map Screen - Feature 2) ----
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
+    
+    // Image Loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
     // ---- END ADDED ----
 
     testImplementation(libs.junit)
