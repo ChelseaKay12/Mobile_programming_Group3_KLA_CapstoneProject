@@ -27,17 +27,20 @@ import ug.ac.ndejje.ndejjenest.navigation.Screen
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.view.components.BottomNavigationBar
+import ug.ac.ndejje.ndejjenest.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // ---- ADDED: Get current user from Firebase Auth ----
-    val currentUser = FirebaseAuth.getInstance().currentUser
-    val userName = currentUser?.displayName ?: currentUser?.email?.substringBefore("@") ?: "Student"
-    val userEmail = currentUser?.email ?: "student@ndejje.ac.ug"
-    // ---- END ADDED ----
+    // ---- MODIFIED: Now fetches from Firestore via ProfileViewModel ----
+    val userName by viewModel.fullName.collectAsState()
+    val userEmail by viewModel.email.collectAsState()
+    // ---- END MODIFIED ----
 
     Scaffold(
         bottomBar = {
