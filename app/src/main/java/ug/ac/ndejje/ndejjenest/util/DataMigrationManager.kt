@@ -48,6 +48,7 @@ class DataMigrationManager {
                 "phoneNumber" to hostel.phoneNumber,
                 "latitude" to hostel.latitude,
                 "longitude" to hostel.longitude,
+                "category" to hostel.location, // Using location as the category
                 "imageUrl" to (imageUrls[hostel.id] ?: "")
             )
             

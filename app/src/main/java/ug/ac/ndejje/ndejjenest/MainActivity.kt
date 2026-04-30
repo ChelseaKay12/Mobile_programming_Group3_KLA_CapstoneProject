@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         
         // ---- TEMPORARY: Upload hostel data to Firestore (Run once) ----
-        // ug.ac.ndejje.ndejjenest.util.DataMigrationManager().uploadMockDataToFirestore()
+        //ug.ac.ndejje.ndejjenest.util.DataMigrationManager().uploadMockDataToFirestore()//
         // ---- END TEMPORARY ----
 
         enableEdgeToEdge()
