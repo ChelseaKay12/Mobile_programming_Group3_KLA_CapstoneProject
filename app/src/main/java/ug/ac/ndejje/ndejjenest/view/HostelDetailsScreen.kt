@@ -54,7 +54,7 @@ fun HostelDetailsScreen(
         ) {
             if (hostel == null) {
                 CircularProgressIndicator(
-                    color = PrimaryGreen,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else {
@@ -190,12 +190,12 @@ private fun ToolbarButtons(
             onClick = onBack,
             modifier = Modifier
                 .size(40.dp)
-                .background(Color.White, CircleShape)
+                .background(MaterialTheme.colorScheme.surface, CircleShape)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint = PrimaryDarkBlue
+                tint = MaterialTheme.colorScheme.primary
             )
         }
 
@@ -203,12 +203,12 @@ private fun ToolbarButtons(
             onClick = onSave,
             modifier = Modifier
                 .size(40.dp)
-                .background(Color.White, CircleShape)
+                .background(MaterialTheme.colorScheme.surface, CircleShape)
         ) {
             Icon(
                 imageVector = if (isSaved) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                 contentDescription = "Save",
-                tint = if (isSaved) Color.Red else PrimaryDarkBlue
+                tint = if (isSaved) Color.Red else MaterialTheme.colorScheme.primary
             )
         }
     }
@@ -231,7 +231,7 @@ private fun HostelContent(
                 text = item.name,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = PrimaryDarkBlue,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = Outfit
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -239,14 +239,14 @@ private fun HostelContent(
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = null,
-                    tint = Color.Gray,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(15.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = item.location,
                     fontSize = 13.sp,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontFamily = Outfit
                 )
             }
@@ -256,13 +256,13 @@ private fun HostelContent(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .background(PrimaryYellow.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f), RoundedCornerShape(8.dp))
                 .padding(horizontal = 10.dp, vertical = 6.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Star,
                 contentDescription = null,
-                tint = PrimaryYellow,
+                tint = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier.size(16.dp)
             )
             Spacer(modifier = Modifier.width(4.dp))
@@ -270,7 +270,7 @@ private fun HostelContent(
                 text = item.rating.toString(),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = PrimaryDarkBlue,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontFamily = Outfit
             )
         }
@@ -284,21 +284,21 @@ private fun HostelContent(
             Text(
                 text = "Price per Semester",
                 fontSize = 13.sp,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontFamily = Outfit
             )
             Text(
                 text = item.price,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
-                color = PrimaryGreen,
+                color = MaterialTheme.colorScheme.secondary,
                 fontFamily = Outfit
             )
         }
     }
 
     Spacer(modifier = Modifier.height(24.dp))
-    HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     Spacer(modifier = Modifier.height(24.dp))
 
     // Amenities
@@ -306,7 +306,7 @@ private fun HostelContent(
         text = "Amenities",
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = PrimaryDarkBlue,
+        color = MaterialTheme.colorScheme.onBackground,
         fontFamily = Outfit
     )
     Spacer(modifier = Modifier.height(12.dp))
@@ -320,7 +320,7 @@ private fun HostelContent(
     }
 
     Spacer(modifier = Modifier.height(24.dp))
-    HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     Spacer(modifier = Modifier.height(24.dp))
 
     // About
@@ -328,20 +328,20 @@ private fun HostelContent(
         text = "About Hostel",
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = PrimaryDarkBlue,
+        color = MaterialTheme.colorScheme.onBackground,
         fontFamily = Outfit
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
         text = item.description,
         fontSize = 14.sp,
-        color = Color.Gray,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         lineHeight = 22.sp,
         fontFamily = Outfit
     )
 
     Spacer(modifier = Modifier.height(24.dp))
-    HorizontalDivider(color = Color.LightGray.copy(alpha = 0.5f))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     Spacer(modifier = Modifier.height(24.dp))
 
     // Contact
@@ -349,7 +349,7 @@ private fun HostelContent(
         text = "Contact Landlord",
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = PrimaryDarkBlue,
+        color = MaterialTheme.colorScheme.onBackground,
         fontFamily = Outfit
     )
     Spacer(modifier = Modifier.height(12.dp))
@@ -357,7 +357,7 @@ private fun HostelContent(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF5F5F5)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
@@ -371,13 +371,13 @@ private fun HostelContent(
                 Box(
                     modifier = Modifier
                         .size(44.dp)
-                        .background(PrimaryGreen.copy(alpha = 0.1f), CircleShape),
+                        .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f), CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.Phone,
                         contentDescription = "Call",
-                        tint = PrimaryGreen,
+                        tint = MaterialTheme.colorScheme.secondary,
                         modifier = Modifier.size(22.dp)
                     )
                 }
@@ -386,14 +386,14 @@ private fun HostelContent(
                     Text(
                         text = "Phone",
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontFamily = Outfit
                     )
                     Text(
                         text = item.phoneNumber,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = Outfit
                     )
                 }
@@ -419,13 +419,13 @@ private fun HostelContent(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
         shape = RoundedCornerShape(16.dp)
     ) {
         Icon(
             imageVector = Icons.Default.Map,
             contentDescription = null,
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
             modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -433,7 +433,7 @@ private fun HostelContent(
             text = "View on Map",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontFamily = Outfit
         )
     }
@@ -459,7 +459,7 @@ fun AmenityItem(amenity: String) {
     Column(
         modifier = Modifier
             .width(80.dp)
-            .background(Color(0xFFF0F4FF), RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .padding(vertical = 12.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -467,14 +467,14 @@ fun AmenityItem(amenity: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = PrimaryDarkBlue,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = amenity,
             fontSize = 11.sp,
-            color = PrimaryDarkBlue,
+            color = MaterialTheme.colorScheme.primary,
             fontFamily = Outfit,
             textAlign = TextAlign.Center,
             maxLines = 1,

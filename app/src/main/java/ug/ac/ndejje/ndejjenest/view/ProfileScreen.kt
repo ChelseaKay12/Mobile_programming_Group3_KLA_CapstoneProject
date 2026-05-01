@@ -63,7 +63,7 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = padding.calculateBottomPadding())
-                .background(Color(0xFFF5F5F5))
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(androidx.compose.foundation.rememberScrollState())
         ) {
             // ---- Feature 1: Profile Header (Dark Section) ----
@@ -71,7 +71,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-                    .background(PrimaryDarkBlue)
+                    .background(MaterialTheme.colorScheme.primary)
             ) {
                 val isLandscape = maxWidth > maxHeight
                 
@@ -85,7 +85,7 @@ fun ProfileScreen(
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = "Settings",
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
@@ -103,15 +103,15 @@ fun ProfileScreen(
                         Box(
                             modifier = Modifier
                                 .size(80.dp)
-                                .border(3.dp, ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen, CircleShape)
+                                .border(3.dp, MaterialTheme.colorScheme.secondary, CircleShape)
                                 .clip(CircleShape)
-                                .background(Color.Gray),
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = "Profile Picture",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(40.dp)
                             )
                         }
@@ -123,12 +123,12 @@ fun ProfileScreen(
                                 text = userName,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                             Text(
                                 text = userEmail,
                                 fontSize = 14.sp,
-                                color = Color.White.copy(alpha = 0.7f)
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                             )
                             
                             Spacer(modifier = Modifier.height(12.dp))
@@ -149,15 +149,15 @@ fun ProfileScreen(
                         Box(
                             modifier = Modifier
                                 .size(100.dp)
-                                .border(3.dp, ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen, CircleShape)
+                                .border(3.dp, MaterialTheme.colorScheme.secondary, CircleShape)
                                 .clip(CircleShape)
-                                .background(Color.Gray),
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = "Profile Picture",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(50.dp)
                             )
                         }
@@ -168,7 +168,7 @@ fun ProfileScreen(
                             text = userName,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             textAlign = TextAlign.Center
                         )
 
@@ -177,7 +177,7 @@ fun ProfileScreen(
                         Text(
                             text = userEmail,
                             fontSize = 14.sp,
-                            color = Color.White.copy(alpha = 0.7f),
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                             textAlign = TextAlign.Center
                         )
 
@@ -206,7 +206,7 @@ fun ProfileScreen(
                 Divider(
                     modifier = Modifier.padding(vertical = 8.dp),
                     thickness = 0.5.dp,
-                    color = Color.LightGray.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                 )
 
                 // Feature 4: Logout button
@@ -224,8 +224,8 @@ fun ProfileScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text(
@@ -263,14 +263,14 @@ fun ProfileMenuItem(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White, RoundedCornerShape(8.dp))
-                    .border(0.5.dp, Color.LightGray.copy(alpha = 0.5f), RoundedCornerShape(8.dp)),
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                    .border(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = PrimaryDarkBlue,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -281,7 +281,7 @@ fun ProfileMenuItem(
                 text = label,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -289,7 +289,7 @@ fun ProfileMenuItem(
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
-                tint = Color.LightGray,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -307,13 +307,13 @@ fun StatItem(count: String, label: String) {
             text = count,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onPrimary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             fontSize = 12.sp,
-            color = Color.White.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
         )
     }
 }

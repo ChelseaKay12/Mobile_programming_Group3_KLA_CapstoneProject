@@ -100,7 +100,7 @@ fun SloganSection() {
             fontSize = 12.sp,
             letterSpacing = 2.sp
         ),
-        color = TextGray
+        color = Color.White.copy(alpha = 0.7f)
     )
 }
 
@@ -119,7 +119,7 @@ fun LoadingSection() {
         Text(
             text = "Loading...",
             style = MaterialTheme.typography.labelSmall,
-            color = TextGray
+            color = Color.White.copy(alpha = 0.6f)
         )
     }
 }

@@ -68,7 +68,7 @@ fun EditProfileScreen(
                         "Edit Profile",
                         fontFamily = Outfit,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 },
                 navigationIcon = {
@@ -76,14 +76,14 @@ fun EditProfileScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
-                            tint = Color.White
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = PrimaryDarkBlue)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
             )
         },
-        containerColor = Color(0xFFF5F5F5)
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         BoxWithConstraints(
             modifier = Modifier
@@ -113,13 +113,13 @@ fun EditProfileScreen(
                             text = fullName.ifBlank { "Your Name" },
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            color = PrimaryDarkBlue,
+                            color = MaterialTheme.colorScheme.onBackground,
                             fontFamily = Outfit
                         )
                         Text(
                             text = email,
                             fontSize = 13.sp,
-                            color = Color.Gray,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontFamily = Outfit
                         )
                     }
@@ -187,16 +187,16 @@ private fun AvatarSection() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .border(3.dp, PrimaryGreen, CircleShape)
+                .border(3.dp, MaterialTheme.colorScheme.secondary, CircleShape)
                 .clip(CircleShape)
-                .background(Color.Gray.copy(alpha = 0.2f)),
+                .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = null,
                 modifier = Modifier.size(55.dp),
-                tint = Color.Gray
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -204,13 +204,13 @@ private fun AvatarSection() {
         Surface(
             modifier = Modifier.size(34.dp),
             shape = CircleShape,
-            color = PrimaryDarkBlue,
+            color = MaterialTheme.colorScheme.primary,
             shadowElevation = 4.dp
         ) {
             Icon(
                 imageVector = Icons.Default.CameraAlt,
                 contentDescription = "Change Picture",
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(8.dp)
             )
         }
@@ -233,14 +233,14 @@ private fun EditFormFields(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = PrimaryDarkBlue)
+            Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         },
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            focusedBorderColor = PrimaryDarkBlue,
-            focusedLabelColor = PrimaryDarkBlue
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = MaterialTheme.colorScheme.primary
         )
     )
 
@@ -254,14 +254,14 @@ private fun EditFormFields(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = PrimaryDarkBlue)
+            Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         },
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
-            focusedBorderColor = PrimaryDarkBlue,
-            focusedLabelColor = PrimaryDarkBlue
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = MaterialTheme.colorScheme.primary
         )
     )
 
@@ -275,15 +275,15 @@ private fun EditFormFields(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = Color.Gray)
+            Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         },
         enabled = false,
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            disabledContainerColor = Color.White,
-            disabledBorderColor = Color.LightGray,
-            disabledLabelColor = Color.Gray,
-            disabledTextColor = Color.Gray
+            disabledContainerColor = MaterialTheme.colorScheme.surface,
+            disabledBorderColor = MaterialTheme.colorScheme.outlineVariant,
+            disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     )
 }
@@ -297,14 +297,14 @@ private fun SaveButton(isLoading: Boolean, onClick: () -> Unit) {
             .height(56.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = PrimaryDarkBlue,
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
         enabled = !isLoading
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(24.dp),
                 strokeWidth = 2.dp
             )

@@ -77,7 +77,7 @@ fun RegisterScreen(
     }
 
     Scaffold(
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         // Box lets us layer elements, like placing the back button on top of the main column
         Box(
@@ -104,7 +104,7 @@ fun RegisterScreen(
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontFamily = Outfit,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
 
@@ -113,7 +113,7 @@ fun RegisterScreen(
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontFamily = Outfit,
                         fontStyle = FontStyle.Italic,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
 
@@ -127,12 +127,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -145,12 +145,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -163,12 +163,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -182,19 +182,19 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
                             val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -207,19 +207,19 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.toggleConfirmPasswordVisibility() }) {
                             val icon = if (isConfirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -234,14 +234,14 @@ fun RegisterScreen(
                         checked = isTermsAccepted,
                         onCheckedChange = { viewModel.onTermsCheckedChanged(it) },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = PrimaryDarkBlue
+                            checkedColor = MaterialTheme.colorScheme.primary
                         )
                     )
                     Text(
                         text = "I agree to the Terms & Conditions",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = Outfit,
-                            color = PrimaryDarkBlue,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -257,8 +257,8 @@ fun RegisterScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     enabled = isTermsAccepted
                 ) {
@@ -285,7 +285,7 @@ fun RegisterScreen(
                         text = "Already have an account?",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = Outfit,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                     TextButton(onClick = { 
@@ -296,7 +296,7 @@ fun RegisterScreen(
                             text = "Log In",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = Outfit,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -314,7 +314,7 @@ fun RegisterScreen(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = PrimaryDarkBlue
+                    tint = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -333,7 +333,7 @@ fun RegisterScreen(
                     ) {}
                     
                     // The spinner
-                    CircularProgressIndicator(color = PrimaryDarkBlue)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             }
         }

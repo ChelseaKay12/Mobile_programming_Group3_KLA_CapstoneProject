@@ -16,6 +16,11 @@ val PrimaryYellow = Color(0xFFFDC000)
 val TextGray = Color(0xFFB0B8C4)
 val PrimaryGreen = Color(0xFF2E7D32)
 
+// New Blue Palette
+val NavyBlue = Color(0xFF001F3F)
+val AccentBlue = Color(0xFF0074D9)
+val SkyBlue = Color(0xFF7FDBFF)
+
 // Dark Mode Specifics
 val DarkBackground = Color(0xFF050B18) // Deeper navy for background
 val DarkSurface = Color(0xFF0F1B2D)    // Slightly lighter navy for cards/surfaces

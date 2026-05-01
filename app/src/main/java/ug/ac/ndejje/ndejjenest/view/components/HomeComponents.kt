@@ -37,12 +37,14 @@ fun BrandingHeader() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Logo Text
+        val onPrimary = MaterialTheme.colorScheme.onPrimary
+        val accentColor = MaterialTheme.colorScheme.secondary
         Text(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Color.White)) {
+                withStyle(style = SpanStyle(color = onPrimary)) {
                     append("Ndejje")
                 }
-                withStyle(style = SpanStyle(color = PrimaryGreen)) {
+                withStyle(style = SpanStyle(color = accentColor)) {
                     append("Nest")
                 }
             },
@@ -56,12 +58,12 @@ fun BrandingHeader() {
                 onClick = { /* Handle notifications */ },
                 modifier = Modifier
                     .size(45.dp)
-                    .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
+                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
             ) {
                 Icon(
                     imageVector = Icons.Default.Notifications,
                     contentDescription = "Notifications",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
             // Red dot notification badge
@@ -72,7 +74,7 @@ fun BrandingHeader() {
                     .offset(x = (-2).dp, y = 2.dp),
                 color = Color.Red,
                 shape = androidx.compose.foundation.shape.CircleShape,
-                border = androidx.compose.foundation.BorderStroke(2.dp, PrimaryDarkBlue)
+                border = androidx.compose.foundation.BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
             ) {}
         }
     }
@@ -100,7 +102,7 @@ fun SearchBarWithFilter(
             placeholder = {
                 Text(
                     "Search hostels or areas...",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp
                 )
             },
@@ -108,18 +110,18 @@ fun SearchBarWithFilter(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search",
-                    tint = Color.Gray
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = PrimaryYellow,
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             ),
             singleLine = true
         )
@@ -131,12 +133,12 @@ fun SearchBarWithFilter(
             onClick = { /* Handle filter */ },
             modifier = Modifier
                 .size(56.dp)
-                .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f), RoundedCornerShape(15.dp))
         ) {
             Icon(
                 imageVector = Icons.Default.FilterList,
                 contentDescription = "Filter",
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -162,7 +164,7 @@ fun CategoryChips(
                     .height(40.dp)
                     .widthIn(min = 60.dp)
                     .clickable { onCategorySelected(category) },
-                color = if (isSelected) PrimaryGreen else Color.White.copy(alpha = 0.1f),
+                color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Box(
@@ -171,7 +173,7 @@ fun CategoryChips(
                 ) {
                     Text(
                         text = category,
-                        color = if (isSelected) Color.Black else Color.White,
+                        color = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onPrimary,
                         fontSize = 14.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     )
@@ -197,12 +199,12 @@ fun SectionHeader(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = PrimaryDarkBlue
+            color = MaterialTheme.colorScheme.onBackground
         )
         TextButton(onClick = onViewAllClick) {
             Text(
                 text = "View all",
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
         }
@@ -248,7 +250,7 @@ fun HostelCard(
                 ) {
                     // Category Badge
                     Surface(
-                        color = PrimaryGreen,
+                        color = MaterialTheme.colorScheme.secondary,
                         shape = RoundedCornerShape(8.dp)
                     ) {
                         Text(
@@ -256,7 +258,7 @@ fun HostelCard(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSecondary
                         )
                     }
 
@@ -265,12 +267,12 @@ fun HostelCard(
                         onClick = onHeartClick,
                         modifier = Modifier
                             .size(32.dp)
-                            .background(Color.White.copy(alpha = 0.3f), CircleShape)
+                            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
                     ) {
                         Icon(
                             imageVector = if (isSaved) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Save",
-                            tint = if (isSaved) Color.Red else Color.White,
+                            tint = if (isSaved) Color.Red else MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(18.dp)
                         )
                     }
@@ -292,14 +294,14 @@ fun HostelCard(
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
-                        tint = Color.Gray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(12.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = hostel.location,
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontFamily = Outfit
                     )
                 }
@@ -310,7 +312,7 @@ fun HostelCard(
                     text = hostel.price,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryGreen,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontFamily = Outfit
                 )
             }
@@ -374,7 +376,7 @@ fun HostelCardHorizontal(
                         Icon(
                             imageVector = if (isSaved) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Save",
-                            tint = if (isSaved) Color.Red else Color.Gray
+                            tint = if (isSaved) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -384,7 +386,7 @@ fun HostelCardHorizontal(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = PrimaryYellow, // Keeping stars yellow as it's standard
+                        tint = MaterialTheme.colorScheme.secondary, // Keeping stars yellow/green as it's standard
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -399,7 +401,7 @@ fun HostelCardHorizontal(
                 Text(
                     text = hostel.location,
                     fontSize = 12.sp,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontFamily = Outfit
                 )
                 
@@ -409,7 +411,7 @@ fun HostelCardHorizontal(
                     text = hostel.price,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryGreen,
+                    color = MaterialTheme.colorScheme.secondary,
                     fontFamily = Outfit
                 )
             }
@@ -424,7 +426,7 @@ fun BottomNavigationBar(
     savedCount: Int = 0
 ) {
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp,
         modifier = Modifier.height(80.dp)
     ) {
@@ -453,7 +455,7 @@ fun BottomNavigationBar(
                             if (label == "Saved" && savedCount > 0) {
                                 Badge(
                                     containerColor = Color.Red,
-                                    contentColor = Color.White
+                                    contentColor = MaterialTheme.colorScheme.onPrimary
                                 ) {
                                     Text(text = savedCount.toString())
                                 }
@@ -463,20 +465,20 @@ fun BottomNavigationBar(
                         Icon(
                             imageVector = icon,
                             contentDescription = label,
-                            tint = if (isSelected) PrimaryYellow else Color.Gray
+                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 },
                 label = {
                     Text(
                         text = label,
-                        color = if (isSelected) PrimaryDarkBlue else Color.Gray,
+                        color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = PrimaryYellow.copy(alpha = 0.1f)
+                    indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
                 )
             )
         }

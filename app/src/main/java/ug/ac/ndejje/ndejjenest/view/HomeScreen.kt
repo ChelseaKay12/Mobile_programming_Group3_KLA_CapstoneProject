@@ -60,7 +60,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
-                            color = PrimaryDarkBlue,
+                            color = if (androidx.compose.foundation.isSystemInDarkTheme()) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp)
                         )
                         .statusBarsPadding()

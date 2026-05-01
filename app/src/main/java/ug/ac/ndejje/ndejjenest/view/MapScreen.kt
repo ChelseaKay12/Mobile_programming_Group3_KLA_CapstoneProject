@@ -124,12 +124,12 @@ fun MapScreen(
                 onClick = { navController.popBackStack() },
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White, CircleShape)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = PrimaryDarkBlue
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -138,7 +138,7 @@ fun MapScreen(
                 text = "Location",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = PrimaryDarkBlue
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             // More Options Button
@@ -146,12 +146,12 @@ fun MapScreen(
                 onClick = { /* Handle more options */ },
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White, CircleShape)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
                     contentDescription = "More",
-                    tint = PrimaryDarkBlue
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -165,7 +165,7 @@ fun MapScreen(
                     .align(Alignment.BottomCenter)
                     .padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
                 Column(
@@ -196,14 +196,14 @@ fun MapScreen(
                                 text = hostel.name,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "${hostel.location}, Near Ndejje University",
                                 fontSize = 12.sp,
-                                color = Color.Gray,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(6.dp))
@@ -212,13 +212,13 @@ fun MapScreen(
                                 Box(
                                     modifier = Modifier
                                         .size(8.dp)
-                                        .background(Color(0xFF4CAF50), CircleShape)
+                                        .background(MaterialTheme.colorScheme.secondary, CircleShape)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
                                     text = "5 mins (1.3 km) away",
                                     fontSize = 12.sp,
-                                    color = Color(0xFF4CAF50),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                                 )
                             }
@@ -233,7 +233,7 @@ fun MapScreen(
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                 contentDescription = "View Details",
-                                tint = PrimaryDarkBlue
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -269,14 +269,14 @@ fun MapScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             shape = RoundedCornerShape(24.dp)
                         ) {
                             Text(
                                 text = "Get Directions",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onPrimary
                             )
                         }
 
@@ -302,12 +302,12 @@ fun MapScreen(
                             },
                             modifier = Modifier
                                 .size(48.dp)
-                                .background(PrimaryDarkBlue, RoundedCornerShape(24.dp))
+                                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(24.dp))
                         ) {
                             Icon(
                                 imageVector = Icons.Default.LocationOn,
                                 contentDescription = "My Location",
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -334,13 +334,13 @@ fun MapScreen(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 16.dp),
-            containerColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.surface,
             shape = CircleShape
         ) {
             Icon(
                 imageVector = Icons.Default.MyLocation,
                 contentDescription = "Center Map",
-                tint = PrimaryDarkBlue
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         // ---- END ADDED ----

@@ -51,7 +51,7 @@ fun SavedHostelsScreen(
                 savedCount = savedHostels.size
             )
         },
-        containerColor = Color(0xFFF5F5F5)
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         BoxWithConstraints(
             modifier = Modifier
@@ -65,7 +65,7 @@ fun SavedHostelsScreen(
                 // ─── Header (adaptive) ───
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = PrimaryDarkBlue,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp)
                 ) {
                     if (isLandscape) {
@@ -80,7 +80,7 @@ fun SavedHostelsScreen(
                             Icon(
                                 imageVector = Icons.Default.Bookmark,
                                 contentDescription = null,
-                                tint = Color.White.copy(alpha = 0.8f),
+                                tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(10.dp))
@@ -88,20 +88,20 @@ fun SavedHostelsScreen(
                                 text = "Saved Hostels",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontFamily = Outfit
                             )
                             if (!isLoading && savedHostels.isNotEmpty()) {
                                 Spacer(modifier = Modifier.width(10.dp))
                                 Surface(
-                                    color = Color.White.copy(alpha = 0.2f),
+                                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f),
                                     shape = RoundedCornerShape(20.dp)
                                 ) {
                                     Text(
                                         text = "${savedHostels.size}",
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White,
+                                        color = MaterialTheme.colorScheme.onPrimary,
                                         fontFamily = Outfit,
                                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 3.dp)
                                     )
@@ -122,14 +122,14 @@ fun SavedHostelsScreen(
                                     text = "Saved Hostels",
                                     fontSize = 24.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.White,
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     fontFamily = Outfit
                                 )
                                 if (!isLoading && savedHostels.isNotEmpty()) {
                                     Text(
                                         text = "${savedHostels.size} hostel${if (savedHostels.size == 1) "" else "s"} bookmarked",
                                         fontSize = 13.sp,
-                                        color = Color.White.copy(alpha = 0.7f),
+                                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                                         fontFamily = Outfit
                                     )
                                 }
@@ -138,13 +138,13 @@ fun SavedHostelsScreen(
                             Box(
                                 modifier = Modifier
                                     .size(44.dp)
-                                    .background(Color.White.copy(alpha = 0.15f), CircleShape),
+                                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f), CircleShape),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Bookmark,
                                     contentDescription = null,
-                                    tint = Color.White,
+                                    tint = MaterialTheme.colorScheme.onPrimary,
                                     modifier = Modifier.size(22.dp)
                                 )
                             }
@@ -159,7 +159,7 @@ fun SavedHostelsScreen(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
-                            CircularProgressIndicator(color = PrimaryGreen)
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                         }
                     }
 
@@ -176,13 +176,13 @@ fun SavedHostelsScreen(
                                 Box(
                                     modifier = Modifier
                                         .size(100.dp)
-                                        .background(PrimaryDarkBlue.copy(alpha = 0.08f), CircleShape),
+                                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f), CircleShape),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.FavoriteBorder,
                                         contentDescription = null,
-                                        tint = PrimaryDarkBlue.copy(alpha = 0.4f),
+                                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
                                         modifier = Modifier.size(48.dp)
                                     )
                                 }
@@ -191,7 +191,7 @@ fun SavedHostelsScreen(
                                     text = "No saved hostels yet",
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = PrimaryDarkBlue,
+                                    color = MaterialTheme.colorScheme.onBackground,
                                     fontFamily = Outfit,
                                     textAlign = TextAlign.Center
                                 )
@@ -199,7 +199,7 @@ fun SavedHostelsScreen(
                                 Text(
                                     text = "Tap the heart icon on any hostel\nto bookmark it for later.",
                                     fontSize = 14.sp,
-                                    color = Color.Gray,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontFamily = Outfit,
                                     textAlign = TextAlign.Center,
                                     lineHeight = 21.sp
@@ -207,7 +207,7 @@ fun SavedHostelsScreen(
                                 Spacer(modifier = Modifier.height(32.dp))
                                 Button(
                                     onClick = { navController.navigate(Screen.Home.route) },
-                                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                                     shape = RoundedCornerShape(12.dp),
                                     modifier = Modifier.height(48.dp)
                                 ) {
@@ -215,7 +215,7 @@ fun SavedHostelsScreen(
                                         text = "Browse Hostels",
                                         fontFamily = Outfit,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                             }

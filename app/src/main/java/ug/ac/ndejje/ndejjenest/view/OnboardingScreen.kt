@@ -72,7 +72,7 @@ fun OnboardingScreen(navController: NavController) {
 
     // 3. Main layout container
     Scaffold(
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         BoxWithConstraints(
             modifier = Modifier
@@ -114,8 +114,7 @@ fun OnboardingScreen(navController: NavController) {
                                         .padding(horizontal = 4.dp)
                                         .height(8.dp)
                                         .width(if (isActive) 24.dp else 8.dp)
-                                        .clip(CircleShape)
-                                        .background(if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0))
+                                        .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
                                 )
                             }
                         }
@@ -132,8 +131,7 @@ fun OnboardingScreen(navController: NavController) {
                     ) {
                         Text(
                             text = buildAnnotatedString {
-                                append("Find Your\n")
-                                withStyle(style = SpanStyle(color = PrimaryGreen)) {
+                                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
                                     append("Perfect ")
                                 }
                                 append("Stay")
@@ -141,7 +139,7 @@ fun OnboardingScreen(navController: NavController) {
                             style = MaterialTheme.typography.headlineLarge.copy(
                                 fontFamily = Outfit,
                                 fontWeight = FontWeight.Bold,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 lineHeight = 40.sp
                             )
                         )
@@ -151,8 +149,7 @@ fun OnboardingScreen(navController: NavController) {
                         Text(
                             text = "Discover affordable hostels and rental rooms near Ndejje University.",
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontFamily = Outfit,
-                                color = Color.Gray
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
 
@@ -175,10 +172,10 @@ fun OnboardingScreen(navController: NavController) {
                             .padding(top = 60.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
+                        val secondaryColor = MaterialTheme.colorScheme.secondary
                         Text(
                             text = buildAnnotatedString {
-                                append("Find Your\n")
-                                withStyle(style = SpanStyle(color = PrimaryGreen)) {
+                                withStyle(style = SpanStyle(color = secondaryColor)) {
                                     append("Perfect ")
                                 }
                                 append("Stay")
@@ -186,7 +183,7 @@ fun OnboardingScreen(navController: NavController) {
                             style = MaterialTheme.typography.displayLarge.copy(
                                 fontFamily = Outfit,
                                 fontWeight = FontWeight.Bold,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 lineHeight = 44.sp
                             )
                         )
@@ -196,8 +193,7 @@ fun OnboardingScreen(navController: NavController) {
                         Text(
                             text = "Discover affordable hostels and rental rooms near Ndejje University.",
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontFamily = Outfit,
-                                color = Color.Gray
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                     }
@@ -233,8 +229,7 @@ fun OnboardingScreen(navController: NavController) {
                                         .padding(horizontal = 4.dp)
                                         .height(8.dp)
                                         .width(if (isActive) 24.dp else 8.dp)
-                                        .clip(CircleShape)
-                                        .background(if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0))
+                                        .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f))
                                 )
                             }
                         }
@@ -258,7 +253,7 @@ fun OnboardingButtons(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
@@ -267,7 +262,7 @@ fun OnboardingButtons(navController: NavController) {
                     fontFamily = Outfit,
                     fontWeight = FontWeight.Bold
                 ),
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -281,7 +276,7 @@ fun OnboardingButtons(navController: NavController) {
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontFamily = Outfit,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryDarkBlue
+                    color = MaterialTheme.colorScheme.primary
                 )
             )
         }
