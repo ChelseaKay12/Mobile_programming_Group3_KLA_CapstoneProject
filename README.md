@@ -136,9 +136,10 @@ We look forward to incorporate in app chats with the landlord, this will enable 
 Ratings and reviews for hostels
 Chat system between students and landlords
 We look forward to incorporate a active notification button that can nortify users when a new hostel is added.
+We aim at including the image feature wherea user can add their profile picture from the profile screen.
 
 Limitations 
-Limited project timeline, with the limted tume we couldn't incorporate all the desired app features like the notification button.
+Limited project timeline, with the limted tme we couldn't incorporate all the desired app features like the notification button, filter button and the view all butto
 Getting access to Visa card for google maps
 
 Repository Information
