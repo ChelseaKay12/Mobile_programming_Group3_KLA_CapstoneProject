@@ -31,15 +31,22 @@ Project Structure
 We made sure we maintain a clean project structure as shown in the screenshot below 
 
 Benefits of a maintaining a good Project Structure 
-A well-organized project structure like the MVVM setup with model, view, and viewmodel is not just about neatness. It directly improves how the app is built, maintained, and scaled.
+A well organized project structure like the MVVM setup with model, view, and viewmodel is not just about neatness. It directly improves how the app is built, maintained, and scaled.
 
 Separation of Concerns. A good structure ensures that each part of the app has a specific responsibility ie Model → Data, View → UI, ViewModel → Logic. This prevents mixing UI and business logic, making the code cleaner and more professional.
+
 Easier Maintenance, when your project is well structured, bugs are easier to find, updates are easier to make, code is easier to read. For example, if there’s a login issue, you know to check the ViewModel, not the UI.
+
 Better Team Collaboration, for a group project like this, each member can work on different parts, fewer conflicts in code and clear responsibilities e.g. UI/UX  works in view, Developer works in viewmodel.
+
 Improved Testability, a structured project makes it easier to write tests. ViewModels can be tested independently, logic is separated from UI. This is important for Testing & QA. 
+
 Scalability, as the app grows new features can be added easily, code doesn’t become messy. Eg adding  a inchat screen with the landlord wont damage the existing code.
+
 Reusability of Code, well-structured code allowed us to reuse components, avoid duplication. Eg utility functions in util/ can be used across the app.
+
 Professional Coding Standards, using a structured approach like MVVM aligns with industry best practices, makes the project look professional, helps during code reviews
+
 Better Handling of Data and State with ViewModels, UI state is managed properly, data survives configuration changes (like screen rotation)
 
 Key Features
