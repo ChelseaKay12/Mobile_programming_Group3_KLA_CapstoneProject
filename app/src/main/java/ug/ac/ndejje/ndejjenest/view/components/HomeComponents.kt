@@ -1,6 +1,7 @@
 package ug.ac.ndejje.ndejjenest.view.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +41,7 @@ fun BrandingHeader() {
                 withStyle(style = SpanStyle(color = Color.White)) {
                     append("Ndejje")
                 }
-                withStyle(style = SpanStyle(color = PrimaryYellow)) {
+                withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryYellow)) {
                     append("Nest")
                 }
             },
@@ -70,7 +71,7 @@ fun BrandingHeader() {
                     .offset(x = (-2).dp, y = 2.dp),
                 color = Color.Red,
                 shape = androidx.compose.foundation.shape.CircleShape,
-                border = androidx.compose.foundation.BorderStroke(2.dp, PrimaryDarkBlue)
+                border = androidx.compose.foundation.BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
             ) {}
         }
     }
@@ -98,7 +99,7 @@ fun SearchBarWithFilter(
             placeholder = {
                 Text(
                     "Search hostels or areas...",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp
                 )
             },
@@ -106,18 +107,18 @@ fun SearchBarWithFilter(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search",
-                    tint = Color.Gray
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
             shape = RoundedCornerShape(15.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 cursorColor = PrimaryYellow,
-                focusedTextColor = Color.Black,
-                unfocusedTextColor = Color.Black
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             ),
             singleLine = true
         )
@@ -160,7 +161,7 @@ fun CategoryChips(
                     .height(40.dp)
                     .widthIn(min = 60.dp)
                     .clickable { onCategorySelected(category) },
-                color = if (isSelected) PrimaryYellow else Color.White.copy(alpha = 0.1f),
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Box(
@@ -195,12 +196,12 @@ fun SectionHeader(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = PrimaryDarkBlue
+            color = MaterialTheme.colorScheme.onBackground
         )
         TextButton(onClick = onViewAllClick) {
             Text(
                 text = "View all",
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp
             )
         }
@@ -217,7 +218,7 @@ fun HostelCard(
         modifier = modifier
             .padding(bottom = 10.dp),
         shape = RoundedCornerShape(20.dp), // Slightly more rounded
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
@@ -237,7 +238,7 @@ fun HostelCard(
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.TopEnd),
-                    color = Color.White.copy(alpha = 0.9f),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Row(
@@ -268,7 +269,7 @@ fun HostelCard(
                     text = hostel.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryDarkBlue,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = Outfit,
                     maxLines = 1
                 )
@@ -283,7 +284,7 @@ fun HostelCard(
                     Text(
                         text = hostel.location,
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontFamily = Outfit
                     )
                 }
@@ -312,7 +313,7 @@ fun HostelCardHorizontal(
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -345,7 +346,7 @@ fun HostelCardHorizontal(
                         text = hostel.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontFamily = Outfit,
                         modifier = Modifier.weight(1f)
                     )
@@ -371,7 +372,7 @@ fun HostelCardHorizontal(
                 Text(
                     text = hostel.location,
                     fontSize = 12.sp,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontFamily = Outfit
                 )
                 
@@ -395,7 +396,7 @@ fun BottomNavigationBar(
     currentRoute: String?
 ) {
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp,
         modifier = Modifier.height(80.dp)
     ) {
@@ -422,13 +423,13 @@ fun BottomNavigationBar(
                     Icon(
                         imageVector = icon,
                         contentDescription = label,
-                        tint = if (isSelected) PrimaryYellow else Color.Gray
+                        tint = if (isSelected) PrimaryYellow else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 label = {
                     Text(
                         text = label,
-                        color = if (isSelected) PrimaryDarkBlue else Color.Gray,
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     )

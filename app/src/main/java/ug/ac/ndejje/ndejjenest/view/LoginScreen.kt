@@ -1,6 +1,7 @@
 package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -28,11 +29,13 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.zIndex
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -75,7 +78,7 @@ fun LoginScreen(
     }
 
     Scaffold(
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         // Box allows us to overlap elements, like putting the back button on top of the column
         Box(
@@ -83,47 +86,32 @@ fun LoginScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Feature 1: Back Arrow Button
-            IconButton(
-                onClick = { 
-                    // This command tells the app to "go back" to the previous screen
-                    navController.popBackStack() 
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
-                    .align(Alignment.TopStart) // Positions it in the top-left corner
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = PrimaryDarkBlue // Using our brand color for the icon
-                )
-            }
 
-            // Central content will go here in the next features
+            // Central content - Now with Scrolling for Landscape Support
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)),
+                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
+                    .verticalScroll(androidx.compose.foundation.rememberScrollState()), // Added Scroll
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                // Feature 2: Branding Section
-                Spacer(modifier = Modifier.height(40.dp))
+                // Branding Section
+                Spacer(modifier = Modifier.height(60.dp))
                 
-                // App Logo
+                // App Logo - Smaller in landscape if needed, but height spacer helps here
                 Image(
                     painter = painterResource(id = R.drawable.login_logo),
                     contentDescription = "App Logo",
-                    modifier = Modifier.size(180.dp)
+                    modifier = Modifier.size(150.dp) // Slightly smaller for better fit
                 )
                 
-                // App Name with Multi-color (Ndejje in Blue, Nest in Yellow)
+                // App Name
                 val annotatedTitle = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = PrimaryDarkBlue)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
                         append("Ndejje")
                     }
-                    withStyle(style = SpanStyle(color = PrimaryYellow)) {
+                    withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryYellow)) {
                         append("Nest")
                     }
                 }
@@ -132,7 +120,8 @@ fun LoginScreen(
                     text = annotatedTitle,
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontFamily = Outfit,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
 
@@ -140,11 +129,11 @@ fun LoginScreen(
                     text = "Welcome back!",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontFamily = Outfit,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
 
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
+                Spacer(modifier = Modifier.height(32.dp))
 
                 // Feature 3: Input Fields (Email & Password)
                 
@@ -156,12 +145,12 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -175,19 +164,19 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
                             val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -203,7 +192,7 @@ fun LoginScreen(
                             text = "Forgot Password?",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontFamily = Outfit,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
@@ -220,8 +209,8 @@ fun LoginScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text(
@@ -233,8 +222,8 @@ fun LoginScreen(
                     )
                 }
 
-                // Feature 7: Bottom Navigation (Register Link)
-                Spacer(modifier = Modifier.weight(1f))
+                // Register Link
+                Spacer(modifier = Modifier.height(32.dp))
                 
                 Row(
                     modifier = Modifier.padding(bottom = 24.dp),
@@ -245,7 +234,7 @@ fun LoginScreen(
                         text = "Don't have an account?",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = Outfit,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                     TextButton(
@@ -258,7 +247,7 @@ fun LoginScreen(
                             text = "Register",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = Outfit,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -281,8 +270,23 @@ fun LoginScreen(
                     ) {}
                     
                     // The spinner
-                    CircularProgressIndicator(color = PrimaryDarkBlue)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
+            }
+
+            // Feature 1: Back Arrow Button (Moved to bottom of Box and added zIndex to be on top)
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
+                    .align(Alignment.TopStart) // Positions it in the top-left corner
+                    .zIndex(1f) // Ensures it's on top of everything
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.primary // Using our brand color for the icon
+                )
             }
         }
     }

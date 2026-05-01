@@ -1,6 +1,7 @@
 package ug.ac.ndejje.ndejjenest.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
@@ -22,6 +23,8 @@ import androidx.navigation.NavController
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.dimensionResource
 import ug.ac.ndejje.ndejjenest.R
@@ -34,7 +37,8 @@ import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
-
+import androidx.compose.ui.platform.LocalConfiguration
+import android.content.res.Configuration
 /**
  * Data model for each onboarding page.
  * This is like a "blueprint" that tells us what each slide needs.
@@ -45,9 +49,13 @@ data class OnboardingPage(
     val image: Int        // The image resource (like R.drawable.onboarding1)
 )
 
+
+
 @Composable
 fun OnboardingScreen(navController: NavController) {
-    // 1. Define the list of pages we want to show
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     val pages = listOf(
         OnboardingPage(
             title = "Find Your\nPerfect Stay",
@@ -66,191 +74,206 @@ fun OnboardingScreen(navController: NavController) {
         )
     )
 
-    // 2. State management for the pager (keeps track of which page we are on)
     val pagerState = rememberPagerState(pageCount = { pages.size })
 
-    // 3. Main layout container
     Scaffold(
-        containerColor = Color.White // Keeping the background clean and white
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            // --- HEADER SECTION ---
-            // This part stays fixed (intact) at the top of the screen
-            Column(
+        if (isLandscape) {
+            // --- LANDSCAPE LAYOUT: Two Columns ---
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
-                    .padding(top = 60.dp),
-                horizontalAlignment = Alignment.Start
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(MaterialTheme.colorScheme.background)
             ) {
-                // buildAnnotatedString allows us to color specific words (Feature 2)
-                val annotatedTitle = buildAnnotatedString {
-                    append("Find Your\n")
-                    withStyle(style = SpanStyle(color = PrimaryYellow)) {
-                        append("Perfect ")
-                    }
-                    withStyle(style = SpanStyle(color = PrimaryGreen)) {
-                        append("Stay")
-                    }
-                }
-
-                Text(
-                    text = annotatedTitle,
-                    style = MaterialTheme.typography.displayLarge.copy(
-                        fontFamily = Outfit,
-                        fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue,
-                        lineHeight = 44.sp
-                    )
-                )
-                
-                // Space between headline and subtitle
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
-                
-                Text(
-                    text = "Discover affordable hostels and rental rooms near Ndejje University.",
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontFamily = Outfit,
-                        color = Color.Gray
-                    )
-                )
-            }
-
-            // Space between text and the image section
-            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
-
-            // --- IMAGE SECTION ---
-            // HorizontalPager handles the swiping logic for the images
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp) // Large height for "full" images
-            ) { pageIndex ->
-                // This function draws the image for the current page
-                IllustrationSection(page = pages[pageIndex])
-            }
-            
-            // Flexible spacer to push the buttons to the bottom of the screen
-            Spacer(modifier = Modifier.weight(1f))
-
-            // --- BOTTOM SECTION (Indicators & Buttons) ---
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 48.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                // Page Indicator (The 3 dots - Feature 4)
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    repeat(pages.size) { index ->
-                        val isActive = pagerState.currentPage == index
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp)
-                                .height(8.dp)
-                                .width(if (isActive) 24.dp else 8.dp) // Active dot is wider
-                                .clip(CircleShape)
-                                .background(
-                                    if (isActive) PrimaryDarkBlue else Color(0xFFE0E0E0)
-                                )
-                        )
-                    }
-                }
-                
-                // Space between dots and main button
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
-
-                // --- MAIN ACTION BUTTON (Feature 5) ---
-                // Setup for the "hover/press" effect
-                val interactionSource = remember { MutableInteractionSource() }
-                val isPressed by interactionSource.collectIsPressedAsState()
-                val animatedButtonColor by animateColorAsState(
-                    targetValue = if (isPressed) PrimaryDarkBlue.copy(alpha = 0.85f) else PrimaryDarkBlue,
-                    label = "buttonPressAnimation"
-                )
-
-                Button(
-                    onClick = { 
-                        // Go to Login Screen
-                        navController.navigate(Screen.Login.route) 
-                    },
-                    interactionSource = interactionSource,
+                // Left Column: Text and Buttons (Now Static to match Portrait)
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
-                        .height(dimensionResource(id = R.dimen.button_height)),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = animatedButtonColor
-                    ),
-                    shape = RoundedCornerShape(16.dp)
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .padding(32.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        text = "Get Started",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontFamily = Outfit,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = Color.White
-                    )
-                }
-
-                // Small space between buttons
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_small)))
-
-                // --- SECONDARY ACTION BUTTON (Feature 6) ---
-                TextButton(
-                    onClick = { 
-                        navController.navigate(Screen.Login.route) 
+                    val annotatedTitle = buildAnnotatedString {
+                        append("Find Your\n")
+                        withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryYellow)) { append("Perfect ") }
+                        withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryGreen)) { append("Stay") }
                     }
-                ) {
+
                     Text(
-                        text = "Log In",
-                        style = MaterialTheme.typography.bodyLarge.copy(
+                        text = annotatedTitle,
+                        style = MaterialTheme.typography.headlineLarge.copy(
                             fontFamily = Outfit,
                             fontWeight = FontWeight.Bold,
-                            color = PrimaryDarkBlue
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     )
+                    
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    Text(
+                        text = "Discover affordable hostels and rental rooms near Ndejje University.",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontFamily = Outfit,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Indicator
+                    Row(horizontalArrangement = Arrangement.Start) {
+                        repeat(pages.size) { index ->
+                            val isActive = pagerState.currentPage == index
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 6.dp)
+                                    .height(6.dp)
+                                    .width(if (isActive) 18.dp else 6.dp)
+                                    .clip(CircleShape)
+                                    .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = { navController.navigate(Screen.Login.route) },
+                        modifier = Modifier.fillMaxWidth().height(48.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Get Started", fontFamily = Outfit, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                // Right Column: Image
+                Box(
+                    modifier = Modifier
+                        .weight(1.2f)
+                        .fillMaxHeight()
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier.fillMaxSize()
+                    ) { pageIndex ->
+                        Image(
+                            painter = painterResource(id = pages[pageIndex].image),
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+            }
+        } else {
+            // --- PORTRAIT LAYOUT: Original Column ---
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
+                        .padding(top = 60.dp),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    val annotatedTitle = buildAnnotatedString {
+                        append("Find Your\n")
+                        withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryYellow)) { append("Perfect ") }
+                        withStyle(style = SpanStyle(color = if (isSystemInDarkTheme()) MaterialTheme.colorScheme.primary else PrimaryGreen)) { append("Stay") }
+                    }
+
+                    Text(
+                        text = annotatedTitle,
+                        style = MaterialTheme.typography.displayLarge.copy(
+                            fontFamily = Outfit,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            lineHeight = 44.sp
+                        )
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Text(
+                        text = "Discover affordable hostels and rental rooms near Ndejje University.",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontFamily = Outfit,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(350.dp)
+                ) { pageIndex ->
+                    IllustrationSection(page = pages[pageIndex])
+                }
+                
+                Spacer(modifier = Modifier.height(48.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 48.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Row(horizontalArrangement = Arrangement.Center) {
+                        repeat(pages.size) { index ->
+                            val isActive = pagerState.currentPage == index
+                            Box(
+                                modifier = Modifier
+                                    .padding(horizontal = 4.dp)
+                                    .height(8.dp)
+                                    .width(if (isActive) 24.dp else 8.dp)
+                                    .clip(CircleShape)
+                                    .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Button(
+                        onClick = { navController.navigate(Screen.Login.route) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                            .height(56.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text("Get Started", fontFamily = Outfit, fontWeight = FontWeight.Bold)
+                    }
+
+                    TextButton(onClick = { navController.navigate(Screen.Login.route) }) {
+                        Text("Log In", fontFamily = Outfit, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    }
                 }
             }
         }
     }
 }
 
-/**
- * Helper function to draw the onboarding illustrations.
- * Uses ContentScale.Crop to make the images look "full".
- */
 @Composable
 fun IllustrationSection(page: OnboardingPage) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(350.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        // Safe resource loading to prevent crashes if images are missing
-        val imageRes = try {
-            if (page.image == 0) R.drawable.ic_launcher_foreground else page.image
-        } catch (e: Exception) {
-            R.drawable.ic_launcher_foreground
-        }
-
-        Image(
-            painter = painterResource(id = imageRes),
-            contentDescription = "Onboarding Illustration",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-    }
+    Image(
+        painter = painterResource(id = page.image),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
+    )
 }
 
 /**

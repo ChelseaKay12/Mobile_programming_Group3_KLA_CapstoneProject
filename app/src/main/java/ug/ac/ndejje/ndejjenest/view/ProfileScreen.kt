@@ -5,8 +5,10 @@ package ug.ac.ndejje.ndejjenest.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
@@ -57,7 +59,8 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = padding.calculateBottomPadding())
-                .background(Color(0xFFF5F5F5))
+                .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState()) // Added Scroll
         ) {
             // ---- Feature 1: Profile Header (Dark Section) ----
             Box(
@@ -156,7 +159,7 @@ fun ProfileScreen(
                 Divider(
                     modifier = Modifier.padding(vertical = 8.dp),
                     thickness = 0.5.dp,
-                    color = Color.LightGray.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                 )
 
                 // Feature 4: Logout button
@@ -174,8 +177,8 @@ fun ProfileScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 ) {
                     Text(
@@ -213,14 +216,14 @@ fun ProfileMenuItem(
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(Color.White, RoundedCornerShape(8.dp))
-                    .border(0.5.dp, Color.LightGray.copy(alpha = 0.5f), RoundedCornerShape(8.dp)),
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+                    .border(0.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = PrimaryDarkBlue,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -231,7 +234,7 @@ fun ProfileMenuItem(
                 text = label,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.weight(1f))

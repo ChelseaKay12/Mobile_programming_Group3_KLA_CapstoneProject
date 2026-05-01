@@ -39,21 +39,22 @@ fun HostelDetailsScreen(
         hostelId?.let { viewModel.getHostel(it) }
     }
 
-    Scaffold { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = padding.calculateBottomPadding())
-        ) {
-            // Main Content
-            if (hostel == null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = PrimaryYellow)
-                }
-            } else {
-                val item = hostel!!
-                
-                // Image Header (Moved inside the 'else' block so 'item' is defined)
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background
+    ) { paddingValues ->
+        if (hostel == null) {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            }
+        } else {
+            val item = hostel!!
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = paddingValues.calculateBottomPadding())
+                    .verticalScroll(rememberScrollState()) // Single scroll for the whole page
+            ) {
+                // Image Header
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -92,12 +93,12 @@ fun HostelDetailsScreen(
                             onClick = { navController.popBackStack() },
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(Color.White, CircleShape)
+                                .background(MaterialTheme.colorScheme.surface, CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Back",
-                                tint = PrimaryDarkBlue
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
 
@@ -105,23 +106,21 @@ fun HostelDetailsScreen(
                             onClick = { /* Handle favorite */ },
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(Color.White, CircleShape)
+                                .background(MaterialTheme.colorScheme.surface, CircleShape)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.FavoriteBorder,
                                 contentDescription = "Favorite",
-                                tint = PrimaryDarkBlue
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
                 }
 
-                // Main Content - Scrollable area
+                // Main Content area (No internal scroll here)
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
-                        .verticalScroll(rememberScrollState())
                         .padding(20.dp)
                 ) {
                     // Core Hostel Information
@@ -135,7 +134,7 @@ fun HostelDetailsScreen(
                                 text = item.name,
                                 fontSize = 24.sp,
                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                             Spacer(modifier = Modifier.height(4.dp))
@@ -150,7 +149,7 @@ fun HostelDetailsScreen(
                                 Text(
                                     text = item.location,
                                     fontSize = 14.sp,
-                                    color = Color.Gray,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                                 )
                             }
@@ -174,7 +173,7 @@ fun HostelDetailsScreen(
                                 text = item.rating.toString(),
                                 fontSize = 14.sp,
                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                color = PrimaryDarkBlue,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                             )
                         }
@@ -187,7 +186,7 @@ fun HostelDetailsScreen(
                         text = "Price",
                         fontSize = 16.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Text(
@@ -205,7 +204,7 @@ fun HostelDetailsScreen(
                         text = "Amenities",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -226,14 +225,14 @@ fun HostelDetailsScreen(
                         text = "About Hostel",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = item.description,
                         fontSize = 14.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         lineHeight = 22.sp,
                         fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
@@ -245,7 +244,7 @@ fun HostelDetailsScreen(
                         text = "Contact Landlord",
                         fontSize = 18.sp,
                         fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = ug.ac.ndejje.ndejjenest.ui.theme.Outfit
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -268,7 +267,7 @@ fun HostelDetailsScreen(
                                 text = item.phoneNumber,
                                 fontSize = 20.sp,
                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                                color = PrimaryDarkBlue
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         }
 
@@ -294,14 +293,14 @@ fun HostelDetailsScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = PrimaryDarkBlue),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(28.dp)
                     ) {
                         Text(
                             text = "View on Map",
                             fontSize = 16.sp,
                             fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
 
@@ -329,7 +328,7 @@ fun AmenityItem(amenity: String) {
     Column(
         modifier = Modifier
             .width(80.dp)
-            .background(Color(0xFFF5F5F5), RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
             .padding(vertical = 12.dp, horizontal = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -337,14 +336,14 @@ fun AmenityItem(amenity: String) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = PrimaryDarkBlue,
+            tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = amenity,
             fontSize = 11.sp,
-            color = PrimaryDarkBlue,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             maxLines = 1,
             overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis

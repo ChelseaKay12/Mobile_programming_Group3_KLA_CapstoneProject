@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import android.widget.Toast
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 
 @Composable
 fun RegisterScreen(
@@ -76,42 +78,26 @@ fun RegisterScreen(
     }
 
     Scaffold(
-        containerColor = Color.White
-    ) { padding ->
+        containerColor = MaterialTheme.colorScheme.background
+    ) { paddingValues ->
         // Box lets us layer elements, like placing the back button on top of the main column
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(paddingValues)
         ) {
-            // Feature 1: Back Arrow Button
-            IconButton(
-                onClick = {
-                    // Goes back to the Login screen
-                    navController.popBackStack()
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
-                    .align(Alignment.TopStart) // Positions it in the top-left corner
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = PrimaryDarkBlue // Using our brand color
-                )
-            }
 
-            // The remaining features (Branding, Fields, Button, Footer)
-            // will be added inside this Column
+            // The remaining features - Now with Scroll for Landscape Support
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)),
+                    .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large))
+                    .verticalScroll(androidx.compose.foundation.rememberScrollState()), // Added Scroll
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
                 // Spacer to push content below the back button
-                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_extra_large)))
+                Spacer(modifier = Modifier.height(60.dp))
 
                 // Feature 2: Header Section
                 Text(
@@ -119,7 +105,7 @@ fun RegisterScreen(
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontFamily = Outfit,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 )
 
@@ -128,7 +114,7 @@ fun RegisterScreen(
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontFamily = Outfit,
                         fontStyle = FontStyle.Italic,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
 
@@ -142,12 +128,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Person, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -160,12 +146,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Email, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -178,12 +164,12 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Phone, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -197,19 +183,19 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.togglePasswordVisibility() }) {
                             val icon = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -222,19 +208,19 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = PrimaryDarkBlue)
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     },
                     trailingIcon = {
                         IconButton(onClick = { viewModel.toggleConfirmPasswordVisibility() }) {
                             val icon = if (isConfirmPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
-                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = Color.Gray)
+                            Icon(imageVector = icon, contentDescription = "Toggle Visibility", tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = PrimaryDarkBlue,
-                        focusedLabelColor = PrimaryDarkBlue
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -249,14 +235,14 @@ fun RegisterScreen(
                         checked = isTermsAccepted,
                         onCheckedChange = { viewModel.onTermsCheckedChanged(it) },
                         colors = CheckboxDefaults.colors(
-                            checkedColor = PrimaryDarkBlue
+                            checkedColor = MaterialTheme.colorScheme.primary
                         )
                     )
                     Text(
                         text = "I agree to the Terms & Conditions",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = Outfit,
-                            color = PrimaryDarkBlue,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold
                         )
                     )
@@ -272,8 +258,8 @@ fun RegisterScreen(
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = PrimaryDarkBlue,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                     enabled = isTermsAccepted
                 ) {
@@ -286,9 +272,8 @@ fun RegisterScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.weight(1f)) // Pushes the footer to the bottom
-
-                // Feature 7: Bottom Navigation
+                // Bottom Navigation
+                Spacer(modifier = Modifier.height(32.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -300,7 +285,7 @@ fun RegisterScreen(
                         text = "Already have an account?",
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontFamily = Outfit,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
                     TextButton(onClick = { 
@@ -324,7 +309,7 @@ fun RegisterScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(padding),
+                        .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
                     // Transparent dark background to dim the screen
@@ -334,8 +319,23 @@ fun RegisterScreen(
                     ) {}
                     
                     // The spinner
-                    CircularProgressIndicator(color = PrimaryDarkBlue)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
+            }
+
+            // Feature 1: Back Arrow Button (Moved to bottom of Box and added zIndex to be on top)
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
+                    .align(Alignment.TopStart) // Positions it in the top-left corner
+                    .zIndex(1f) // Ensures it's on top of everything
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.primary // Using our brand color
+                )
             }
         }
     }

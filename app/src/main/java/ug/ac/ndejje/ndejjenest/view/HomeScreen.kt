@@ -36,6 +36,7 @@ fun HomeScreen(
     val categories = listOf("All", "Bombo", "Luwero", "Kampala")
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomNavigationBar(navController = navController, currentRoute = currentRoute)
         }
@@ -44,6 +45,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = paddingValues.calculateBottomPadding())
+                .verticalScroll(rememberScrollState()) // Make the whole page scrollable
         ) {
             // Top Section with Dark Blue Background
             Column(
@@ -97,12 +99,11 @@ fun HomeScreen(
                 onViewAllClick = { /* Handle view all */ }
             )
 
-            // Main Content Area (White background) - Scrollable Cards
+            // Main Content Area - (No internal scroll here, the outer Column handles it)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    .background(MaterialTheme.colorScheme.background) // Adapt to background
             ) {
                 recommendedHostels.forEach { hostel ->
                     HostelCardHorizontal(

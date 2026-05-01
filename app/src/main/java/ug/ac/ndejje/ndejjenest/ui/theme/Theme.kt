@@ -13,9 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryYellow,
-    onPrimary = Color.Black,
-    secondary = PrimaryGreen,
+    primary = Color(0xFF64B5F6), // Light blue accent for dark mode
+    onPrimary = Color(0xFF050B18), // Dark background color for text on primary
+    secondary = PrimaryYellow,    // Branding yellow moved to secondary
+    onSecondary = Color.Black,
     background = DarkBackground,
     surface = DarkSurface,
     onBackground = DarkOnSurface,
