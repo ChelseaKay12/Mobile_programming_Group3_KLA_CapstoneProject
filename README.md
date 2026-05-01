@@ -35,12 +35,19 @@ Benefits of a maintaining a good Project Structure
 A well-organized project structure like the MVVM setup with model, view, and viewmodel is not just about neatness. It directly improves how the app is built, maintained, and scaled.
 
 Separation of Concerns. A good structure ensures that each part of the app has a specific responsibility ie Model → Data, View → UI, ViewModel → Logic. This prevents mixing UI and business logic, making the code cleaner and more professional.
+
 Easier Maintenance, when your project is well structured, bugs are easier to find, updates are easier to make, code is easier to read. For example, if there’s a login issue, you know to check the ViewModel, not the UI.
+
 Better Team Collaboration, for a group project like this, each member can work on different parts, fewer conflicts in code and clear responsibilities e.g. UI/UX  works in view, Developer works in viewmodel.
+
 Improved Testability, a structured project makes it easier to write tests. ViewModels can be tested independently, logic is separated from UI. This is important for Testing & QA. 
+
 Scalability, as the app grows new features can be added easily, code doesn’t become messy. Eg adding  a inchat screen with the landlord wont damage the existing code.
+
 Reusability of Code, well-structured code allowed us to reuse components, avoid duplication. Eg utility functions in util/ can be used across the app.
+
 Professional Coding Standards, using a structured approach like MVVM aligns with industry best practices, makes the project look professional, helps during code reviews
+
 Better Handling of Data and State with ViewModels, UI state is managed properly, data survives configuration changes (like screen rotation)
 
 Key Features
@@ -81,10 +88,6 @@ The search bar significantly improves interaction with the application by making
 
 Notification 
 NdejjeNest includes a notification button that keeps users informed whenever a new hostel is added to the system. This feature ensures that users do not miss out on newly available accommodation options, which is especially important in a dynamic environment where listings can change frequently. By providing timely updates, the app enhances user awareness and encourages continuous engagement.
-
-The notification system alerts users through the notification screen whenever new hostel data is introduced. These notifications are triggered based on updates to the hostel database and they are displayed in a clear and organized manner for easy viewing. The notification button serves as a central access point where users can check all updates at their convenience, ensuring they stay informed without needing to manually refresh or search for new listings.
-
-This feature adds significant value by making the application more proactive rather than reactive. Users can rely on the system to bring relevant updates directly to them, saving time and effort. It also increases user retention, as users are more likely to return to the app when they receive meaningful updates. In future improvements, the notification system could be enhanced with customization options, allowing users to control the type and frequency of notifications they receive.
 
 
 Testing and Quality Assurance
