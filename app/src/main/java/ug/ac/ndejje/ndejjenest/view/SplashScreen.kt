@@ -68,7 +68,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
 @Composable
 fun LogoSection() {
     Image(
-        painter = painterResource(id = R.drawable.ndejjenest),
+        painter = painterResource(id = R.drawable.splash_logo),
         contentDescription = "App Logo",
         modifier = Modifier.size(200.dp)
     )
