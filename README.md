@@ -8,7 +8,7 @@ and rental rooms around main and kampala campus, surrounding areas such as Bombo
 Luwero, Mengo etc.
 
 NdejjeNest provides a centralized digital solution where:
-A mobile android application that centralizes hostel and rental information helping students
+A mobile android application that centralizes hostel information helping students
 to easily discover, locate, compare the available hostels or rentals.
 
 Objectives of the Project 
@@ -54,8 +54,9 @@ Key Features
 User Authentication (Login/Register)
 Browse available hostels
 View hostel details (price, location, description)
-User-friendly onboarding experience
+User-friendly onboarding experience, a scrollable animation was implemented 
 Navigation between multiple screens
+State management and Screen rotation, we implemented effective state management using remember and ViewModels to ensure a smooth user experience, even during configuration changes such as screen rotation.
 
 Navigation
 The app includes the following screens connected using Jetpack Compose as seen below:
@@ -67,6 +68,7 @@ Onboarding Screen. The Onboarding Screen introduces new users to the application
 Login Screen. The Login Screen handles user authentication, allows users to sign in securely, ensures personalized access to features like saved hostels and profile data. It protects user data and enables customized user experiences.
 
 Home Screen (Hostel List). The Home Screen is the main dashboard of the application, it displays a dynamic list of available hostels (using LazyColumn), and provides quick access to search and explore options. This is the core functional screen where users interact with the main service of the app.
+We put the hostels listings in categories so as to make  it easier to look for a hostel in their preferred location.
 
 Hostel Details Screen. The Hostel Details Screen provides detailed information about a selected hostel, it shows hostel descriptions, pricing, location, and amenities, allowing users to save or interact with the listing. It enables informed decision-making by providing all necessary details in one place.
 
@@ -74,7 +76,7 @@ View map button (Map Screen)
 NdejjeNest includes a “View on Map” button that allows users to see the exact location of a selected hostel using map services. When a user selects a hostel and taps the “View on Map” button, the application retrieves the hostel’s location details (latitude and longitude or address). An intent is triggered to open a map application on the device such as Google Maps. The selected hostel location is displayed on the map, allowing the user to view the exact position. Get directions, this estimates distance from their current location
 This feature helps students to easily locate hostels without confusion, plan routes from campus to the hostel, and compare distances between different accommodation options.
 
-Profile Screen. The Profile Screen manages user information, displays user details (name, email, etc.), allows updates to personal information and includes a logout button. It gives users control over their account and personal data.
+Profile Screen. The Profile Screen manages user information, displays user details (name, email, etc.), allows updates to personal information and includes a logout button. It gives users control over their account and personal data. The user can't edit their user name from the profile screen for mre security purposes.
 
 Saved Hostels. The Saved Hostels Screen allows users to view bookmarked hostels. It stores user-selected hostels for future reference, improves convenience when comparing options. It enhances user experience by allowing easy access to preferred listings.
 
@@ -116,7 +118,7 @@ Language: Kotlin
 UI Framework: Jetpack Compose
 Architecture: MVVM (Model-View-ViewModel)
 Navigation: Jetpack Navigation Component
-Database: Room Database (or Retrofit API)
+Database: Room Database
 Testing: JUnit, AndroidX Test
 
 Git Workflow
@@ -127,16 +129,21 @@ Design Principles
 Material 3 design system
 Clean and simple UI
 Accessibility considerations (clear text, readable layout)
-Responsive and user-friendly interface
+Responsive and user-friendly interface and very interactive 
 
 Future Improvements
 We look forward to incorporate in app chats with the landlord, this will enable the students and communicate directly with the landlord in the app
 Ratings and reviews for hostels
 Chat system between students and landlords
+We look forward to incorporate a active notification button that can nortify users when a new hostel is added.
+
+Limitations 
+Limited project timeline, with the limted tume we couldn't incorporate all the desired app features like the notification button.
+Getting access to Visa card for google maps
 
 Repository Information
 Public GitHub Repository
-Contains full source code, documentation, and commit history
+Contains full source code, documentation in the README, and commit history
 Demonstrates collaborative development
 
 How to Run the Project
