@@ -63,6 +63,61 @@ class HostelRepository {
         }
     }
 
+    /**
+     * Toggles the saved status of a hostel for a specific user using a Firestore Transaction.
+     */
+    suspend fun toggleSavedHostel(userId: String, hostelId: String) {
+        val userRef = firestore.collection("users").document(userId)
+        
+        try {
+            firestore.runTransaction { transaction ->
+                val snapshot = transaction.get(userRef)
+                val currentSaved = snapshot.get("savedHostelIds") as? List<String> ?: emptyList()
+                
+                val newSaved = if (currentSaved.contains(hostelId)) {
+                    currentSaved - hostelId
+                } else {
+                    currentSaved + hostelId
+                }
+                
+                transaction.update(userRef, "savedHostelIds", newSaved)
+            }.await()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Fetches only the hostels that match the provided list of IDs.
+     * This is used for the Saved Hostels screen.
+     */
+    fun getSavedHostels(hostelIds: List<String>): Flow<List<Hostel>> = callbackFlow {
+        if (hostelIds.isEmpty()) {
+            trySend(emptyList())
+            val emptySubscription = object : com.google.firebase.firestore.ListenerRegistration {
+                override fun remove() {}
+            }
+            awaitClose { emptySubscription.remove() }
+            return@callbackFlow
+        }
+        
+        // Firestore 'whereIn' supports up to 30 IDs
+        val query = hostelsCollection.whereIn(com.google.firebase.firestore.FieldPath.documentId(), hostelIds)
+        val subscription = query.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+            
+            val hostels = snapshot?.documents?.mapNotNull { doc ->
+                doc.toObject(Hostel::class.java)?.copy(id = doc.id)
+            } ?: emptyList()
+            
+            trySend(hostels)
+        }
+        awaitClose { subscription.remove() }
+    }
+
     // --- LEGACY MOCK DATA (Keeping for reference during transition) ---
     // These will be removed once ViewModels are fully updated.
     fun getFeaturedHostels(): List<Hostel> = emptyList()

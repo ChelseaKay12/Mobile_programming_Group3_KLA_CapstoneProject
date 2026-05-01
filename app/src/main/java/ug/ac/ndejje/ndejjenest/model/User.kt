@@ -8,5 +8,6 @@ package ug.ac.ndejje.ndejjenest.model
 data class User(
     val fullName: String = "",
     val email: String = "",
-    val phoneNumber: String = ""
+    val phoneNumber: String = "",
+    val savedHostelIds: List<String> = emptyList()
 )
