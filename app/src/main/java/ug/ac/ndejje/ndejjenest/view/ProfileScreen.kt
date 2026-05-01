@@ -169,7 +169,7 @@ fun ProfileScreen(
                     onClick = {
                         viewModel.signOut()
                         navController.navigate(Screen.Login.route) {
-                            popUpTo(0) { inclusive = true }
+                            popUpTo(Screen.Home.route) { inclusive = true }
                         }
                     },
                     modifier = Modifier

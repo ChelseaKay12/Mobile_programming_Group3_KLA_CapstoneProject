@@ -1,6 +1,9 @@
 package ug.ac.ndejje.ndejjenest.model
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FirebaseFirestore
 
 /**
@@ -45,8 +48,8 @@ class AuthRepository {
                         onComplete(false, "Failed to get user ID.")
                     }
                 } else {
-                    // Registration failed (e.g., email already in use, password too weak)
-                    onComplete(false, task.exception?.message ?: "Registration failed.")
+                    // Registration failed
+                    onComplete(false, mapExceptionToMessage(task.exception))
                 }
             }
     }
@@ -60,8 +63,19 @@ class AuthRepository {
                 if (task.isSuccessful) {
                     onComplete(true, "Login successful!")
                 } else {
-                    onComplete(false, task.exception?.message ?: "Login failed.")
+                    onComplete(false, mapExceptionToMessage(task.exception))
                 }
             }
+    }
+    /**
+     * Maps Firebase exceptions to user-friendly messages.
+     */
+    private fun mapExceptionToMessage(exception: Exception?): String {
+        return when (exception) {
+            is FirebaseNetworkException -> "Please check your network connectivity"
+            is FirebaseAuthInvalidUserException, 
+            is FirebaseAuthInvalidCredentialsException -> "Please check your email or password"
+            else -> exception?.localizedMessage ?: "An unexpected error occurred. Please try again."
+        }
     }
 }
