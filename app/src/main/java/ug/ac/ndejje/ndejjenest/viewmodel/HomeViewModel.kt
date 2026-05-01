@@ -29,8 +29,28 @@ class HomeViewModel : ViewModel() {
     private val _recommendedHostels = MutableStateFlow<List<Hostel>>(emptyList())
     val recommendedHostels = _recommendedHostels.asStateFlow()
 
+    private val _savedHostelIds = MutableStateFlow<List<String>>(emptyList())
+    val savedHostelIds = _savedHostelIds.asStateFlow()
+
     init {
         observeHostels()
+        observeSavedHostels()
+    }
+
+    private fun observeSavedHostels() {
+        val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            .collection("users").document(uid)
+            .addSnapshotListener { snapshot, _ ->
+                _savedHostelIds.value = snapshot?.get("savedHostelIds") as? List<String> ?: emptyList()
+            }
+    }
+
+    fun toggleSave(hostelId: String) {
+        val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        viewModelScope.launch {
+            repository.toggleSavedHostel(uid, hostelId)
+        }
     }
 
     private fun observeHostels() {

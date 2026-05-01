@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -83,33 +84,17 @@ fun LoginScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Feature 1: Back Arrow Button
-            IconButton(
-                onClick = { 
-                    // This command tells the app to "go back" to the previous screen
-                    navController.popBackStack() 
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
-                    .align(Alignment.TopStart) // Positions it in the top-left corner
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = PrimaryDarkBlue // Using our brand color for the icon
-                )
-            }
-
-            // Central content will go here in the next features
+            // Central content
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(androidx.compose.foundation.rememberScrollState())
                     .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
                 // Feature 2: Branding Section
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(60.dp))
                 
                 // App Logo
                 Image(
@@ -264,6 +249,20 @@ fun LoginScreen(
                         )
                     }
                 }
+            }
+
+            // Feature 1: Back Arrow Button (On top of Column)
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
+                    .align(Alignment.TopStart)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = PrimaryDarkBlue
+                )
             }
 
             // Feature 8: Loading Overlay

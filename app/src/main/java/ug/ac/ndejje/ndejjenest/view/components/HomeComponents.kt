@@ -3,6 +3,7 @@ package ug.ac.ndejje.ndejjenest.view.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import ug.ac.ndejje.ndejjenest.model.Hostel
 import ug.ac.ndejje.ndejjenest.ui.theme.Outfit
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryDarkBlue
+import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen
 import ug.ac.ndejje.ndejjenest.ui.theme.PrimaryYellow
 
 @Composable
@@ -40,7 +42,7 @@ fun BrandingHeader() {
                 withStyle(style = SpanStyle(color = Color.White)) {
                     append("Ndejje")
                 }
-                withStyle(style = SpanStyle(color = PrimaryYellow)) {
+                withStyle(style = SpanStyle(color = PrimaryGreen)) {
                     append("Nest")
                 }
             },
@@ -160,7 +162,7 @@ fun CategoryChips(
                     .height(40.dp)
                     .widthIn(min = 60.dp)
                     .clickable { onCategorySelected(category) },
-                color = if (isSelected) PrimaryYellow else Color.White.copy(alpha = 0.1f),
+                color = if (isSelected) PrimaryGreen else Color.White.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Box(
@@ -210,21 +212,25 @@ fun SectionHeader(
 @Composable
 fun HostelCard(
     hostel: Hostel,
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isSaved: Boolean = false,
+    onHeartClick: () -> Unit = {}
 ) {
     Card(
-        modifier = modifier
-            .padding(bottom = 10.dp),
-        shape = RoundedCornerShape(20.dp), // Slightly more rounded
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        modifier = Modifier
+            .width(220.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(
-            modifier = Modifier.clickable { onClick() }
-        ) {
-            // Live Image from Firestore
-            Box(modifier = Modifier.fillMaxWidth().height(140.dp)) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .height(140.dp)
+                    .fillMaxWidth()
+            ) {
+                // Image
                 coil.compose.AsyncImage(
                     model = hostel.imageUrl,
                     contentDescription = hostel.name,
@@ -232,30 +238,40 @@ fun HostelCard(
                     contentScale = androidx.compose.ui.layout.ContentScale.Crop
                 )
                 
-                // Rating Badge Overlay
-                Surface(
+                // Top Overlays
+                Row(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.TopEnd),
-                    color = Color.White.copy(alpha = 0.9f),
-                    shape = RoundedCornerShape(8.dp)
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
                 ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                    // Category Badge
+                    Surface(
+                        color = PrimaryGreen,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text(
+                            text = hostel.category,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
+
+                    // Heart Icon
+                    IconButton(
+                        onClick = onHeartClick,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(Color.White.copy(alpha = 0.3f), CircleShape)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null,
-                            tint = PrimaryYellow,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = hostel.rating.toString(),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Outfit
+                            imageVector = if (isSaved) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = "Save",
+                            tint = if (isSaved) Color.Red else Color.White,
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
@@ -268,7 +284,7 @@ fun HostelCard(
                     text = hostel.name,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryDarkBlue,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = Outfit,
                     maxLines = 1
                 )
@@ -294,7 +310,7 @@ fun HostelCard(
                     text = hostel.price,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryYellow,
+                    color = PrimaryGreen,
                     fontFamily = Outfit
                 )
             }
@@ -305,14 +321,16 @@ fun HostelCard(
 @Composable
 fun HostelCardHorizontal(
     hostel: Hostel,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isSaved: Boolean = false,
+    onHeartClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
@@ -345,27 +363,37 @@ fun HostelCardHorizontal(
                         text = hostel.name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = PrimaryDarkBlue,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontFamily = Outfit,
                         modifier = Modifier.weight(1f)
                     )
-                    
-                    // Small Rating
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    IconButton(
+                        onClick = onHeartClick
+                    ) {
                         Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null,
-                            tint = PrimaryYellow,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = hostel.rating.toString(),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Outfit
+                            imageVector = if (isSaved) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = "Save",
+                            tint = if (isSaved) Color.Red else Color.Gray
                         )
                     }
+                }
+                
+                // Small Rating
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = null,
+                        tint = PrimaryYellow, // Keeping stars yellow as it's standard
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = hostel.rating.toString(),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = Outfit
+                    )
                 }
 
                 Text(
@@ -375,13 +403,13 @@ fun HostelCardHorizontal(
                     fontFamily = Outfit
                 )
                 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
                     text = hostel.price,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PrimaryYellow,
+                    color = PrimaryGreen,
                     fontFamily = Outfit
                 )
             }
@@ -392,7 +420,8 @@ fun HostelCardHorizontal(
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    currentRoute: String?
+    currentRoute: String?,
+    savedCount: Int = 0
 ) {
     NavigationBar(
         containerColor = Color.White,
@@ -419,11 +448,24 @@ fun BottomNavigationBar(
                     }
                 },
                 icon = {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = label,
-                        tint = if (isSelected) PrimaryYellow else Color.Gray
-                    )
+                    BadgedBox(
+                        badge = {
+                            if (label == "Saved" && savedCount > 0) {
+                                Badge(
+                                    containerColor = Color.Red,
+                                    contentColor = Color.White
+                                ) {
+                                    Text(text = savedCount.toString())
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = label,
+                            tint = if (isSelected) PrimaryYellow else Color.Gray
+                        )
+                    }
                 },
                 label = {
                     Text(

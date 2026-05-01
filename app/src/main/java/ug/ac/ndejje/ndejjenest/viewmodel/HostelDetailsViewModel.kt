@@ -14,11 +14,33 @@ class HostelDetailsViewModel : ViewModel() {
     private val _hostel = MutableStateFlow<Hostel?>(null)
     val hostel = _hostel.asStateFlow()
 
+    private val _isSaved = MutableStateFlow(false)
+    val isSaved = _isSaved.asStateFlow()
+
     fun getHostel(id: String) {
         viewModelScope.launch {
             // Fetch the specific hostel from Firestore by ID
             val result = repository.getHostelById(id)
             _hostel.value = result
+            observeSavedStatus(id)
+        }
+    }
+
+    private fun observeSavedStatus(hostelId: String) {
+        val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            .collection("users").document(uid)
+            .addSnapshotListener { snapshot, _ ->
+                val savedIds = snapshot?.get("savedHostelIds") as? List<String> ?: emptyList()
+                _isSaved.value = savedIds.contains(hostelId)
+            }
+    }
+
+    fun toggleSave() {
+        val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val hostelId = _hostel.value?.id ?: return
+        viewModelScope.launch {
+            repository.toggleSavedHostel(uid, hostelId)
         }
     }
 }

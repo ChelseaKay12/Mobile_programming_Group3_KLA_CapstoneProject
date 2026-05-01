@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
@@ -46,11 +47,16 @@ fun ProfileScreen(
     // ---- MODIFIED: Now fetches from Firestore via ProfileViewModel ----
     val userName by viewModel.fullName.collectAsState()
     val userEmail by viewModel.email.collectAsState()
+    val savedCount by viewModel.savedCount.collectAsState()
     // ---- END MODIFIED ----
 
     Scaffold(
         bottomBar = {
-            BottomNavigationBar(navController = navController, currentRoute = currentRoute)
+            BottomNavigationBar(
+                navController = navController, 
+                currentRoute = currentRoute,
+                savedCount = savedCount
+            )
         }
     ) { padding ->
         Column(
@@ -58,21 +64,23 @@ fun ProfileScreen(
                 .fillMaxSize()
                 .padding(bottom = padding.calculateBottomPadding())
                 .background(Color(0xFFF5F5F5))
+                .verticalScroll(androidx.compose.foundation.rememberScrollState())
         ) {
             // ---- Feature 1: Profile Header (Dark Section) ----
-            Box(
+            BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
                     .background(PrimaryDarkBlue)
-                    .padding(top = 48.dp, bottom = 32.dp)
             ) {
+                val isLandscape = maxWidth > maxHeight
+                
                 // Settings Icon (top-right)
                 IconButton(
                     onClick = { /* Handle settings */ },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 16.dp)
+                        .padding(top = 16.dp, end = 16.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
@@ -81,60 +89,102 @@ fun ProfileScreen(
                     )
                 }
 
-                // Avatar + Name + Email (centered)
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Avatar Circle
-                    Box(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .border(3.dp, PrimaryYellow, CircleShape)
-                            .clip(CircleShape)
-                            .background(Color.Gray),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Profile Picture",
-                            tint = Color.White,
-                            modifier = Modifier.size(50.dp)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // User Name
-                    Text(
-                        text = userName,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    // User Email
-                    Text(
-                        text = userEmail,
-                        fontSize = 14.sp,
-                        color = Color.White.copy(alpha = 0.7f),
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // ---- ADDED: Stats Row (Profile Screen - Feature 2) ----
+                if (isLandscape) {
+                    // --- LANDSCAPE HEADER: Split Row ---
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp)
+                            .padding(top = 24.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        // Saved Stat
-                        StatItem(count = "12", label = "Saved")
+                        // Avatar
+                        Box(
+                            modifier = Modifier
+                                .size(80.dp)
+                                .border(3.dp, ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen, CircleShape)
+                                .clip(CircleShape)
+                                .background(Color.Gray),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Profile Picture",
+                                tint = Color.White,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(24.dp))
+
+                        Column {
+                            Text(
+                                text = userName,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            Text(
+                                text = userEmail,
+                                fontSize = 14.sp,
+                                color = Color.White.copy(alpha = 0.7f)
+                            )
+                            
+                            Spacer(modifier = Modifier.height(12.dp))
+                            
+                            // Stats Row in Landscape
+                            StatItem(count = savedCount.toString(), label = "Saved")
+                        }
                     }
-                    // ---- END ADDED ----
+                } else {
+                    // --- PORTRAIT HEADER: Centered Column ---
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 48.dp, bottom = 32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        // Avatar Circle
+                        Box(
+                            modifier = Modifier
+                                .size(100.dp)
+                                .border(3.dp, ug.ac.ndejje.ndejjenest.ui.theme.PrimaryGreen, CircleShape)
+                                .clip(CircleShape)
+                                .background(Color.Gray),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = "Profile Picture",
+                                tint = Color.White,
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = userName,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = userEmail,
+                            fontSize = 14.sp,
+                            color = Color.White.copy(alpha = 0.7f),
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        StatItem(count = savedCount.toString(), label = "Saved")
+                    }
                 }
             }
 

@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import android.widget.Toast
 import ug.ac.ndejje.ndejjenest.navigation.Screen
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
@@ -84,28 +85,12 @@ fun RegisterScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Feature 1: Back Arrow Button
-            IconButton(
-                onClick = {
-                    // Goes back to the Login screen
-                    navController.popBackStack()
-                },
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
-                    .align(Alignment.TopStart) // Positions it in the top-left corner
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = PrimaryDarkBlue // Using our brand color
-                )
-            }
-
             // The remaining features (Branding, Fields, Button, Footer)
             // will be added inside this Column
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .verticalScroll(androidx.compose.foundation.rememberScrollState())
                     .padding(horizontal = dimensionResource(id = R.dimen.screen_margin_large)),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
@@ -311,12 +296,26 @@ fun RegisterScreen(
                             text = "Log In",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontFamily = Outfit,
-                                color = PrimaryYellow,
+                                color = PrimaryDarkBlue,
                                 fontWeight = FontWeight.Bold
                             )
                         )
                     }
                 }
+            }
+
+            // Feature 1: Back Arrow Button (Moved to top of Z-stack)
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.screen_margin_medium))
+                    .align(Alignment.TopStart)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = PrimaryDarkBlue
+                )
             }
 
             // Feature 8: Loading Overlay

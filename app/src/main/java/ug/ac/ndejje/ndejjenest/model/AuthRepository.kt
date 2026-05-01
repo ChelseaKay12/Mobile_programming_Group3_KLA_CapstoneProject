@@ -60,7 +60,17 @@ class AuthRepository {
                 if (task.isSuccessful) {
                     onComplete(true, "Login successful!")
                 } else {
-                    onComplete(false, task.exception?.message ?: "Login failed.")
+                    val exception = task.exception
+                    val errorMessage = when (exception) {
+                        is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException,
+                        is com.google.firebase.auth.FirebaseAuthInvalidUserException -> 
+                            "Please check your email or password and try again"
+                        is com.google.firebase.FirebaseNetworkException -> 
+                            "Please check your internet connection and try again"
+                        else -> 
+                            exception?.message ?: "Login failed."
+                    }
+                    onComplete(false, errorMessage)
                 }
             }
     }

@@ -23,42 +23,40 @@ class ProfileViewModel : ViewModel() {
     private val _phoneNumber = MutableStateFlow("")
     val phoneNumber = _phoneNumber.asStateFlow()
 
+    private val _savedCount = MutableStateFlow(0)
+    val savedCount = _savedCount.asStateFlow()
+
+    private var userListener: com.google.firebase.firestore.ListenerRegistration? = null
+
     init {
         fetchUserProfile()
     }
 
-    /**
-     * Fetches the user's profile data from Firestore using their UID.
-     * The data was saved during registration in AuthRepository.registerUser().
-     */
     private fun fetchUserProfile() {
-        val uid = auth.currentUser?.uid
+        val uid = auth.currentUser?.uid ?: return
 
-        if (uid != null) {
-            // Read from Firestore "users" collection where we saved during registration
-            firestore.collection("users").document(uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        // These field names match the User data class used in registration
-                        _fullName.value = document.getString("fullName") ?: "Student"
-                        _email.value = document.getString("email") ?: auth.currentUser?.email ?: ""
-                        _phoneNumber.value = document.getString("phoneNumber") ?: ""
-                    } else {
-                        // Document doesn't exist, fall back to Auth data
-                        _fullName.value = auth.currentUser?.displayName ?: "Student"
-                        _email.value = auth.currentUser?.email ?: ""
-                    }
-                }
-                .addOnFailureListener {
-                    // Firestore failed, fall back to Auth data
+        userListener = firestore.collection("users").document(uid)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
                     _fullName.value = auth.currentUser?.displayName ?: "Student"
                     _email.value = auth.currentUser?.email ?: ""
+                    return@addSnapshotListener
                 }
-        } else {
-            _fullName.value = "Guest"
-            _email.value = "Not logged in"
-        }
+
+                if (snapshot != null && snapshot.exists()) {
+                    _fullName.value = snapshot.getString("fullName") ?: "Student"
+                    _email.value = snapshot.getString("email") ?: auth.currentUser?.email ?: ""
+                    _phoneNumber.value = snapshot.getString("phoneNumber") ?: ""
+                    
+                    val savedIds = snapshot.get("savedHostelIds") as? List<*>
+                    _savedCount.value = savedIds?.size ?: 0
+                }
+            }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        userListener?.remove()
     }
 
     /**
