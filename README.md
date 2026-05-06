@@ -33,7 +33,7 @@ View: UI built using Jetpack Compose
 ViewModel: Manages UI state and business logic
 Jetpack Compose
 Navigation Component
-Room Database / Firebase (use the one your team implemented)
+Firebase
 ViewModel & State Management (remember)
 Material 3 Design System
 Git & GitHub (Version Control)
